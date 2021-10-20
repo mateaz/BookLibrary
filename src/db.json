@@ -1,0 +1,47 @@
+{
+    "books": [
+      {
+        "id": 1,
+        "name": "Nož",
+        "author": "Jo Nesbo",
+        "userId": "",
+        "image": "1_noz.jpg"
+      },
+      {
+        "id": 2,
+        "name": "Derviš i smrt",
+        "author": "Meša Selimović",
+        "userId": 1,
+        "image": "2_dervis_i_smrt.jpeg"
+      },
+      {
+        "id": 3,
+        "name": "Ciganin, ali najljepši",
+        "author": "Kristian Novak",
+        "userId": 1,
+        "image": "3_ciganin_ali_najljepsi.png"
+      },
+      {
+        "id": 4,
+        "name": "Čovjek od kestena",
+        "author": "Soren Sveistrup",
+        "userId": "",
+        "image": "4_covjek_od_kestena.jpg"
+      }
+    ],
+
+    "users": [
+          {
+            "id": 1,
+            "first_name": "Antonija",
+            "last_name": "Matić",
+            "date_of_birth": "20.10.2000."
+          },
+          {
+            "id": 2,
+            "first_name": "Damir",
+            "last_name": "Veselski",
+            "date_of_birth": "25.10.1994."
+          }
+        ]
+  }

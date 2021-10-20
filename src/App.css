@@ -36,3 +36,18 @@
     transform: rotate(360deg);
   }
 }
+
+
+.list-books {
+  display: flex;
+  flex-direction: row;
+  flex-basis: 100%;
+  width: 85%;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: auto;
+}
+
+.list-books div {
+  flex-basis: 30%;
+}

@@ -3,30 +3,22 @@
       {
         "id": 1,
         "name": "Nož",
-        "author": "Jo Nesbo",
-        "userId": "",
-        "image": "1_noz.jpg"
+        "author": "Jo Nesbo"
       },
       {
         "id": 2,
         "name": "Derviš i smrt",
-        "author": "Meša Selimović",
-        "userId": 1,
-        "image": "2_dervis_i_smrt.jpeg"
+        "author": "Meša Selimović"
       },
       {
         "id": 3,
         "name": "Ciganin, ali najljepši",
-        "author": "Kristian Novak",
-        "userId": 1,
-        "image": "3_ciganin_ali_najljepsi.png"
+        "author": "Kristian Novak"
       },
       {
         "id": 4,
         "name": "Čovjek od kestena",
-        "author": "Soren Sveistrup",
-        "userId": "",
-        "image": "4_covjek_od_kestena.jpg"
+        "author": "Soren Sveistrup"
       }
     ],
 

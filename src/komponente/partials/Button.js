@@ -1,9 +1,11 @@
 import React from 'react';
 
-export default function Button({icon, styleName, onClickFun}) {
+const Button = (props) => { 
   return (
-    <button className={`button-default ${ styleName }`} onClick = {onClickFun}>
-        {icon}
+    <button className={`button-default ${ props.styleName }`} onClick = {() => props.onClickFun(props.feature)}>
+        {props.icon}
     </button>
   );
 };
+
+export default Button;

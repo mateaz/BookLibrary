@@ -6,16 +6,16 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function App() {
-  const [books, setBooks] = useState([]);
+ // const [books, setBooks] = useState([]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     getAllBooks().then(res => setBooks(res.data));
-}, []);
+}, []);*/
 
 
   return (
     <div className="App">
-        <BookList books={books}/>
+        <BookList/>
     </div>
   );
 }

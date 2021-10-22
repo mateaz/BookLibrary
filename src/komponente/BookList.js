@@ -1,19 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {FiEdit} from 'react-icons/fi';
+import {updateBook, getAllBooks} from "../crud/http-methods-books";
 
-import {Button, ModalComponent} from './partials';
+
+import {Button, ModalComponent, Container} from './partials';
 
 export default class BookList extends React.Component {
     state = {
+        books: [],
         targetIDs: [],
         showID: [],
         openModal: false,
+        selectedFeature: {
+            id: '',
+            name: '',
+            author:'',
+        },
     };
 
-   /* componentDidMount () {
-        console.log(`${this.props.propsconsole} ${this.props.propsname}`);
-    };*/
+     componentDidMount () {
+        getAllBooks().then(res => (console.log(res), this.setState({books: res.data})));
+    };
+
+    edit = (data) => {
+        console.log(data)
+        //data.id = this.state.selectedFeature.id;
+        console.log(this.state.selectedFeature['id'])
+      /*  updateBook(data.id, data)
+            .then(() => {
+               // showAlert("success", "Update success");
+                //closeDialog();
+                this.closeModalEdit();
+            })
+            .catch((error) => /*showAlert("error", "Update failed"));*/ /*console.log(error));*/
+    };
+
+   
 
    /* handleOnClickButton = (e) => {
         let buttonId = e.target.getAttribute('id');
@@ -37,48 +59,47 @@ export default class BookList extends React.Component {
         this.setState({targetIDs: newList});
     };*/
 
-    openModalEdit = () => {
+    openModalEdit = (selected) => {
+        console.log(selected)
+
         this.setState({openModal: !this.state.openModal})
+        if (selected !== this.state.selectedFeature) {
+            this.setState({selectedFeature: selected})
+         };
     };
 
     closeModalEdit = () => {
         this.setState({openModal: false})
-    }
+    };
+
+    saveSubmitedData = (submitedData) => {
+        console.log(submitedData)
+        this.edit();
+    };
 
     render() {
-
-        return (                                                                                                                                                          
-            <div className="list-books">
-                {this.props.books.map(book => {
-                    console.log(book)
-                    const { id } = book;
-                    const { userId } = book;
-                    const { name } = book;
-                    const { author } = book;
-                    const {image } = book
-                    return (
-                        <div key={id} className="book-card">
-                            {/*  <img src={require(`../img/${image}`).default} width={150} height={150}/>*/}
-                            <p className="name-book">{name}</p>
-                            <p className="author-book">{author}</p>  
-                            {/*  <p>{userId}</p>      */}
-                            <Button styleName={'book-list-button'} icon = {<FiEdit />} onClickFun = {this.openModalEdit}
-                            />
-                        </div>
-                    )
-                })}
+        return (        
+            <div>  
+                <Container 
+                data = {this.state.books}
+                openModalEdit = {this.openModalEdit}
+                />
+            
                 <ModalComponent 
                     show={this.state.openModal}
                     handleClose={this.closeModalEdit}
+                    attributes = {this.state.selectedFeature}
+                    submitData = {this.saveSubmitedData}
                 />
-            </div>
-        )}
-};
+          </div>   
+        )
+}
+}
 
-BookList.propTypes={
+/*BookList.propTypes={
     propsconsole: PropTypes.string, 
     propsname: PropTypes.string,
     posts: PropTypes.array,
     user: PropTypes.array,
     comments: PropTypes.array
-};
+};*/

@@ -1,10 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {FiEdit} from 'react-icons/fi';
+
+import {Button, ModalComponent} from './partials';
 
 export default class BookList extends React.Component {
     state = {
         targetIDs: [],
         showID: [],
+        openModal: false,
     };
 
    /* componentDidMount () {
@@ -33,27 +37,40 @@ export default class BookList extends React.Component {
         this.setState({targetIDs: newList});
     };*/
 
+    openModalEdit = () => {
+        this.setState({openModal: !this.state.openModal})
+    };
+
+    closeModalEdit = () => {
+        this.setState({openModal: false})
+    }
+
     render() {
 
         return (                                                                                                                                                          
             <div className="list-books">
                 {this.props.books.map(book => {
+                    console.log(book)
                     const { id } = book;
-                    const { userID } = book;
+                    const { userId } = book;
                     const { name } = book;
                     const { author } = book;
                     const {image } = book
                     return (
-                        <div key={id} >
-                            <div>
-                                <img src={require(`../img/${image}`).default} width={150} height={150}/>
-                                <p>{userID}</p>
-                                <p>{name}</p>
-                                <p>{author}</p>        
-                            </div>                   
+                        <div key={id} className="book-card">
+                            {/*  <img src={require(`../img/${image}`).default} width={150} height={150}/>*/}
+                            <p className="name-book">{name}</p>
+                            <p className="author-book">{author}</p>  
+                            {/*  <p>{userId}</p>      */}
+                            <Button styleName={'book-list-button'} icon = {<FiEdit />} onClickFun = {this.openModalEdit}
+                            />
                         </div>
                     )
                 })}
+                <ModalComponent 
+                    show={this.state.openModal}
+                    handleClose={this.closeModalEdit}
+                />
             </div>
         )}
 };

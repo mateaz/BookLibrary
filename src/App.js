@@ -3,8 +3,9 @@ import {getAllBooks} from "./crud/http-methods-books";
 
 import {BookList} from './komponente';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-function App() {
+export default function App() {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
@@ -19,4 +20,3 @@ function App() {
   );
 }
 
-export default App;

@@ -12,7 +12,7 @@ import * as Yup from 'yup';
 
 export default function FormComponent ( {attributes, submitData }) {
   const [initData, setData] = useState();
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState();
 
 
   const validationSchema = Yup.object().shape({
@@ -24,6 +24,8 @@ export default function FormComponent ( {attributes, submitData }) {
   });
 
   useEffect(() => {
+    console.log(attributes.date_of_birth)
+    setStartDate(new Date(attributes.date_of_birth))
    setData(attributes);
   }, []);
 
@@ -67,22 +69,20 @@ export default function FormComponent ( {attributes, submitData }) {
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Datum rođenja</Form.Label>
-        <Form.Control type="text" placeholder="Datum rođenja" {...register('date_of_birth')} defaultValue={attributes.date_of_birth}  className={`form-control ${errors.date_of_birth ? 'is-invalid' : ''}`}/>
-        <div className="invalid-feedback">{errors.date_of_birth?.message}</div>
+        <Controller
+          control={control}
+          name='date_of_birth'
+          render={({ field }) => (
+            <ReactDatePicker
+              placeholderText='Odaberi datum rođenja'
+              dateFormat="dd/MM/yyyy"
+              selected={startDate}
+              locale="hr"
+              onChange={handleChange}
+            />
+          )}
+        />
       </Form.Group>
-      <Controller
-        control={control}
-        name='date_of_birth'
-        render={({ field }) => (
-          <ReactDatePicker
-            placeholderText='Odaberi datum rođenja'
-            dateFormat="dd-MM-yyyy"
-            selected={startDate}
-            locale="hr"
-            onChange={handleChange}
-          />
-      )}
-      />
 
       <Button variant="primary" type="submit">
         Submit

@@ -19,20 +19,23 @@ export default class BookList extends React.Component {
     };
 
      componentDidMount () {
-        getAllBooks().then(res => (console.log(res), this.setState({books: res.data})));
+        getAllBooks().then(res => this.setState({books: res.data}));
     };
 
     edit = (data) => {
-        console.log(data)
-        //data.id = this.state.selectedFeature.id;
-        console.log(this.state.selectedFeature['id'])
-      /*  updateBook(data.id, data)
+        data['id'] = this.state.selectedFeature['id'];
+        updateBook(data['id'], data)
             .then(() => {
                // showAlert("success", "Update success");
                 //closeDialog();
+                this.updateData();
                 this.closeModalEdit();
             })
-            .catch((error) => /*showAlert("error", "Update failed"));*/ /*console.log(error));*/
+            .catch((error) => /*showAlert("error", "Update failed"));*/ console.log(error));
+    };
+
+    updateData = () => {
+        getAllBooks().then(res => this.setState({books: res.data}));
     };
 
    
@@ -60,8 +63,6 @@ export default class BookList extends React.Component {
     };*/
 
     openModalEdit = (selected) => {
-        console.log(selected)
-
         this.setState({openModal: !this.state.openModal})
         if (selected !== this.state.selectedFeature) {
             this.setState({selectedFeature: selected})
@@ -73,18 +74,16 @@ export default class BookList extends React.Component {
     };
 
     saveSubmitedData = (submitedData) => {
-        console.log(submitedData)
-        this.edit();
+        this.edit(submitedData);
     };
 
     render() {
         return (        
             <div>  
                 <Container 
-                data = {this.state.books}
-                openModalEdit = {this.openModalEdit}
+                    data = {this.state.books}
+                    openModalEdit = {this.openModalEdit}
                 />
-            
                 <ModalComponent 
                     show={this.state.openModal}
                     handleClose={this.closeModalEdit}

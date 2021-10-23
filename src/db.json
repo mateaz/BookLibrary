@@ -2,36 +2,46 @@
   "books": [
     {
       "id": 1,
-      "name": "sadas",
-      "author": "Jo Nesbo"
+      "book_name": "Nož",
+      "author_firstname": "Jo",
+      "author_lastname": "Nesbo"
     },
     {
-      "author": "Meša Selimović",
-      "name": "Derviš i smrt",
-      "id": 2
+      "id": 2,
+      "book_name": "Derviš i smrt",
+      "author_firstname": "Meša",
+      "author_lastname": "Selimović"
     },
     {
-      "author": "Kristian Novak",
-      "name": "Ciganin, ali najljepši",
-      "id": 3
+      "id": 3,
+      "book_name": "Ciganin, ali najljepši",
+      "author_firstname": "Kristian",
+      "author_lastname": "Novak"
     },
     {
       "id": 4,
-      "name": "Čovjek od kestena",
-      "author": "Soren Sveistrup"
+      "book_name": "Čovjek od kestena",
+      "author_firstname": "Soren",
+      "author_lastname": "Sveistrup"
+    },
+    {
+      "id": 5,
+      "book_name": "asdasda",
+      "author_firstname": "dasda",
+      "author_lastname": "ds"
     }
   ],
   "users": [
     {
       "id": 1,
-      "first_name": "Antonija",
-      "last_name": "Matić",
+      "user_firstname": "Antonia",
+      "user_lastname": "Matić",
       "date_of_birth": "20.10.2000."
     },
     {
       "id": 2,
-      "first_name": "Damir",
-      "last_name": "Veselski",
+      "user_firstname": "Damir",
+      "user_lastname": "Veselski",
       "date_of_birth": "25.10.1994."
     }
   ]

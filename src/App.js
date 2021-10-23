@@ -1,22 +1,37 @@
-import React, {useEffect, useState} from 'react';
-import {getAllBooks} from "./crud/http-methods-books";
+import React from 'react';
+import {BrowserRouter as Router, Route, Redirect, Link, Switch} from 'react-router-dom';
 
-import {BookList} from './komponente';
+import {BookList, UserList} from './komponente';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function App() {
- // const [books, setBooks] = useState([]);
-
-  /*useEffect(() => {
-    getAllBooks().then(res => setBooks(res.data));
-}, []);*/
-
 
   return (
-    <div className="App">
-        <BookList/>
-    </div>
+    <Router>
+      <div>
+        <ul>
+          <li>
+            <Link to="/books">Knjige</Link>
+          </li>
+          <li>
+            <Link to="/users">Korisnici</Link>
+          </li>
+        </ul>
+
+        <Switch>
+          <Route path="/books">
+            <BookList />
+          </Route>
+          <Route path="/users">
+            <UserList />
+          </Route>
+          <Route path="/">
+            <BookList />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 

@@ -11,7 +11,6 @@ export const getUser = (id) => {
     return http.get(`/users/${id}`);
 };
 
-export const removeUser = (id) => {
-    return http.delete(`/users/${id}`);
+export const createUser = (data) => {
+    return http.post("/books", data);
 };
-

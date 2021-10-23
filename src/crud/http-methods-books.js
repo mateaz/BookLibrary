@@ -11,6 +11,6 @@ export const getBook = (id) => {
     return http.get(`/books/${id}`);
 };
 
-export const removeBook = (id) => {
-    return http.delete(`/books/${id}`);
+export const createBook = (data) => {
+    return http.post("/books", data);
 };

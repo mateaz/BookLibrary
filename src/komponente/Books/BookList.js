@@ -1,20 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {updateBook, getAllBooks} from "../crud/http-methods-books";
+import {updateBook, getAllBooks, createBook} from "../../crud/http-methods-books";
+import {Form, Button} from 'react-bootstrap';
 
 
-import {Button, ModalComponent, Container} from './partials';
+import {ModalComponent, Container} from './partials';
 
 export default class BookList extends React.Component {
     state = {
         books: [],
+        nextId: '',
         targetIDs: [],
         showID: [],
         openModal: false,
         selectedFeature: {
             id: '',
-            name: '',
-            author:'',
+            book_name: '',
+            author_firstname:'',
+            author_lastname: ''
         },
     };
 
@@ -22,12 +25,21 @@ export default class BookList extends React.Component {
         getAllBooks().then(res => this.setState({books: res.data}));
     };
 
-    edit = (data) => {
+    editData = (data) => {
         data['id'] = this.state.selectedFeature['id'];
         updateBook(data['id'], data)
             .then(() => {
                // showAlert("success", "Update success");
-                //closeDialog();
+                this.updateData();
+                this.closeModalEdit();
+            })
+            .catch((error) => /*showAlert("error", "Update failed"));*/ console.log(error));
+    };
+
+    addData = (data) => {
+        data['id'] = this.state.nextId;
+        createBook(data)
+            .then(() => {
                 this.updateData();
                 this.closeModalEdit();
             })
@@ -37,30 +49,6 @@ export default class BookList extends React.Component {
     updateData = () => {
         getAllBooks().then(res => this.setState({books: res.data}));
     };
-
-   
-
-   /* handleOnClickButton = (e) => {
-        let buttonId = e.target.getAttribute('id');
-        let newButtonIds = [...this.state.showID];
-
-        if (newButtonIds.includes(buttonId)) {
-            newButtonIds = newButtonIds.filter(e => e !== buttonId)
-        } else {
-          newButtonIds.push(buttonId);
-        }
-        this.setState({showID: newButtonIds});
-
-        let targetId = parseInt(e.target.previousSibling.getAttribute('id'));
-        let newList = [...this.state.targetIDs];
-        
-        if (newList.includes(targetId)) {
-          newList = newList.filter(e => e !== targetId)
-        } else {
-            newList.push(targetId);
-        }
-        this.setState({targetIDs: newList});
-    };*/
 
     openModalEdit = (selected) => {
         this.setState({openModal: !this.state.openModal})
@@ -73,13 +61,22 @@ export default class BookList extends React.Component {
         this.setState({openModal: false})
     };
 
-    saveSubmitedData = (submitedData) => {
-        this.edit(submitedData);
+    saveSubmitedData = (submitedData, b) => {
+        if (b === 'edit') {
+            this.editData(submitedData);
+        } else this.addData(submitedData);
+    };
+
+    openModalAdd = () => {
+        const nextValueId = Math.max(...this.state.books.map(o => o.id), 0)+1;
+        this.setState({nextId: nextValueId})
+        this.openModalEdit({id: nextValueId, book_name: '', author_firstname: '', author_lastname: ''});
     };
 
     render() {
         return (        
             <div>  
+                <Button variant="outlined" color="primary" onClick={this.openModalAdd}>Add new</Button>
                 <Container 
                     data = {this.state.books}
                     openModalEdit = {this.openModalEdit}

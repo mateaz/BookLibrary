@@ -51,6 +51,7 @@
 
 .list-books div {
   flex-basis: 30%;
+  text-align: center;
 }
 
 .book-card {

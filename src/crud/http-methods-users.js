@@ -12,5 +12,9 @@ export const getUser = (id) => {
 };
 
 export const createUser = (data) => {
-    return http.post("/books", data);
+    return http.post("/users", data);
+};
+
+export const getBorrowedBooks = (id) => {
+    return http.get(`/users/${id}/books`);
 };

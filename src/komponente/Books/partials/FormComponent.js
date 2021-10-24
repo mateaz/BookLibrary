@@ -16,6 +16,7 @@ export default function FormComponent ( {attributes, submitData }) {
   });
 
   useEffect(() => {
+    console.log(attributes)
    setData(attributes);
   }, []);
 
@@ -28,6 +29,10 @@ export default function FormComponent ( {attributes, submitData }) {
   });
 
   const onSubmit = data => {
+   // console.log(data)
+
+   console.log(initData)
+    data.userId = initData.userId;
     if (!initData.book_name) {
       submitData(data, 'add');
     } else submitData(data, 'edit')

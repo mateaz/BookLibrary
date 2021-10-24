@@ -67,3 +67,15 @@
 .author-book {
   font-size: 14px;
 }
+
+.button-active {
+  background-color: black!important;
+}
+
+.red {
+  background-color: red;
+}
+
+.blue {
+  background-color: blue;
+}

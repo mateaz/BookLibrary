@@ -4,45 +4,50 @@
       "id": 1,
       "book_name": "Nož",
       "author_firstname": "Jo",
-      "author_lastname": "Nesbo"
+      "author_lastname": "Nesbopromjena",
+      "userId": 2
     },
     {
       "id": 2,
       "book_name": "Derviš i smrt",
       "author_firstname": "Meša",
-      "author_lastname": "Selimović"
+      "author_lastname": "Selimović",
+      "userId": ""
     },
     {
       "id": 3,
       "book_name": "Ciganin, ali najljepši",
       "author_firstname": "Kristian",
-      "author_lastname": "Novak"
+      "author_lastname": "Novak",
+      "userId": ""
     },
     {
       "id": 4,
       "book_name": "Čovjek od kestena",
       "author_firstname": "Soren",
-      "author_lastname": "Sveistrup"
+      "author_lastname": "Sveistrup",
+      "userId": 1
     },
     {
       "id": 5,
-      "book_name": "asdasda",
-      "author_firstname": "dasda",
-      "author_lastname": "ds"
+      "book_name": "Muškarci koji mrze žene",
+      "author_firstname": "Stieg",
+      "author_lastname": "Larsson",
+      "userId": ""
     }
   ],
   "users": [
     {
-      "id": 1,
-      "user_firstname": "Antonia",
+      "date_of_birth": "20/09/2006",
       "user_lastname": "Matić",
-      "date_of_birth": "2020/02/10"
+      "user_firstname": "Antonia",
+      "id": 1
     },
     {
-      "id": 2,
+      "date_of_birth": "20/10/2021",
+      "user_lastname": "asšpdkačls.",
       "user_firstname": "Damir",
-      "user_lastname": "Veselski",
-      "date_of_birth": "1994/02/10"
+      "id": 2
     }
   ]
 }

@@ -1,7 +1,7 @@
 import React from 'react';
-import {BrowserRouter as Router, Route, Redirect, Link, Switch} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Link, Switch} from 'react-router-dom';
 
-import {BookList, UserList} from './komponente';
+import {BookList, UserList, Interface} from './komponente';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -17,6 +17,9 @@ export default function App() {
           <li>
             <Link to="/users">Korisnici</Link>
           </li>
+          <li>
+            <Link to="/posudi-vrati">Posudi/vrati knjigu</Link>
+          </li>
         </ul>
 
         <Switch>
@@ -25,6 +28,9 @@ export default function App() {
           </Route>
           <Route path="/users">
             <UserList />
+          </Route>
+          <Route path="/posudi-vrati">
+            <Interface />
           </Route>
           <Route path="/">
             <BookList />

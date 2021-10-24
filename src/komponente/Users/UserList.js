@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {updateUser, getAllUsers, createUser} from "../../crud/http-methods-users";
-import {Form, Button} from 'react-bootstrap';
+import {Button} from 'react-bootstrap';
 
 
 import {ModalComponent, Container} from './partials';
@@ -20,8 +20,8 @@ export default class UserList extends React.Component {
         },
     };
 
-     componentDidMount () {
-        getAllUsers().then(res => (console.log(res.data), this.setState({users: res.data})));
+    componentDidMount () {
+        getAllUsers().then(res => this.setState({users: res.data}));
     };
 
     editData = (data) => {
@@ -29,7 +29,6 @@ export default class UserList extends React.Component {
         updateUser(data['id'], data)
             .then(() => {
                // showAlert("success", "Update success");
-                //closeDialog();
                 this.updateData();
                 this.closeModalEdit();
             })
@@ -70,7 +69,7 @@ export default class UserList extends React.Component {
     openModalAdd = () => {
         const nextValueId = Math.max(...this.state.users.map(o => o.id), 0)+1;
         this.setState({nextId: nextValueId})
-        this.openModalEdit({id: nextValueId, name: '', author: ''}, );
+        this.openModalEdit({id: nextValueId, user_firstname: '', user_lastname: '', date_of_birth: ''});
     };
 
     render() {

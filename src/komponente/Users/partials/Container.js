@@ -11,7 +11,6 @@ export default function Container({data, openModalEdit}) {
             const { date_of_birth } = feature;
             const { user_firstname } = feature;
             const { user_lastname } = feature;
-
           //  const {image } = feature
             return (
                 <div key={id} className="book-card">

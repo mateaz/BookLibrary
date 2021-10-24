@@ -3,26 +3,29 @@ import PropTypes from 'prop-types';
 import {updateBook, getAllBooks, createBook} from "../../crud/http-methods-books";
 import {Form, Button} from 'react-bootstrap';
 
-
 import {ModalComponent, Container} from './partials';
 
 export default class BookList extends React.Component {
     state = {
         books: [],
+        active: 'all-books',
+        alldata: [],
         nextId: '',
         targetIDs: [],
+        filter: false,
         showID: [],
         openModal: false,
         selectedFeature: {
             id: '',
             book_name: '',
             author_firstname:'',
-            author_lastname: ''
+            author_lastname: '',
+            userId: '',
         },
     };
 
      componentDidMount () {
-        getAllBooks().then(res => this.setState({books: res.data}));
+        getAllBooks().then(res => {this.setState({books: res.data}); this.setState({alldata: res.data})});
     };
 
     editData = (data) => {
@@ -47,7 +50,10 @@ export default class BookList extends React.Component {
     };
 
     updateData = () => {
-        getAllBooks().then(res => this.setState({books: res.data}));
+        if (this.state.filter) {
+            getAllBooks().then(res => {this.setState({alldata: res.data})});
+        } else getAllBooks().then(res => {this.setState({books: res.data}); this.setState({alldata: res.data})});
+        
     };
 
     openModalEdit = (selected) => {
@@ -68,19 +74,36 @@ export default class BookList extends React.Component {
     };
 
     openModalAdd = () => {
-        const nextValueId = Math.max(...this.state.books.map(o => o.id), 0)+1;
+        const nextValueId = Math.max(...this.state.alldata.map(o => o.id), 0)+1;
         this.setState({nextId: nextValueId})
-        this.openModalEdit({id: nextValueId, book_name: '', author_firstname: '', author_lastname: ''});
+        this.openModalEdit({id: nextValueId, book_name: '', author_firstname: '', author_lastname: '', userId: '',});
+    };
+
+    filterData = (e) => {
+        if (e.target.getAttribute('id').includes('filter')) {
+            let array = this.state.alldata.filter((item) => {
+                if( item.userId !== '') {
+                    return true
+                };
+            });
+            this.setState({books: array});
+            this.setState({filter: true})
+        } else {
+            this.setState({books: this.state.alldata});
+            this.setState({filter: false})
+        };
+
+        this.setState({active: e.target.getAttribute('id')})
     };
 
     render() {
         return (        
             <div>  
                 <Button variant="outlined" color="primary" onClick={this.openModalAdd}>Add new</Button>
-                <Container 
-                    data = {this.state.books}
-                    openModalEdit = {this.openModalEdit}
-                />
+                <Button className={`button-book ${this.state.active === 'all-books' ? 'button-active' : ''}`} id="all-books" onClick={(e)=> this.filterData(e)}>Sve knjige</Button>
+                <Button className={`button-book  ${this.state.active === 'filter-books' ? 'button-active' : ''}`}  id="filter-books" onClick={(e)=> this.filterData(e)}>Posuđene knjige</Button>
+
+                <Container data = {this.state.books} openModalEdit = {this.openModalEdit}/>
                 <ModalComponent 
                     show={this.state.openModal}
                     handleClose={this.closeModalEdit}
@@ -89,8 +112,7 @@ export default class BookList extends React.Component {
                 />
           </div>   
         )
-}
-}
+}};
 
 /*BookList.propTypes={
     propsconsole: PropTypes.string, 

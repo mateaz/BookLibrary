@@ -4,7 +4,7 @@ import {FiEdit} from 'react-icons/fi';
 
 export default function Container({data, openModalEdit, onClickFun, attributes, submitData}) {
   return (
-    <div className="list-books">
+    <div className="list-books ">
         {data.map(feature => {
 
             const { id } = feature;

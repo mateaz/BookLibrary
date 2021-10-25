@@ -16,9 +16,8 @@ export default function FormComponent ( {attributes, submitData }) {
   });
 
   useEffect(() => {
-    console.log(attributes)
    setData(attributes);
-  }, []);
+  }, [attributes]);
 
   const {
     register,
@@ -31,7 +30,7 @@ export default function FormComponent ( {attributes, submitData }) {
   const onSubmit = data => {
    // console.log(data)
 
-   console.log(initData)
+  // console.log(initData)
     data.userId = initData.userId;
     if (!initData.book_name) {
       submitData(data, 'add');
@@ -59,7 +58,6 @@ export default function FormComponent ( {attributes, submitData }) {
         <Form.Control type="text" placeholder="Prezime autora" {...register('author_lastname')} id="author_lastname-feature" defaultValue={attributes.author_lastname}  className={`form-control ${errors.author_lastname ? 'is-invalid' : ''}`}/>
         <div className="invalid-feedback">{errors.author_lastname?.message}</div>
       </Form.Group>
-
       <Button variant="primary" type="submit">
         Submit
       </Button>

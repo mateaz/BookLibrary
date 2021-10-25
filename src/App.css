@@ -74,8 +74,22 @@
 
 .red {
   background-color: red;
+  flex-basis: 45%;
 }
 
 .blue {
   background-color: blue;
+  flex-basis: 45%;
+}
+
+.vertical-line {
+  border-left: 2px solid black;
+}
+
+.userinterface {
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-around; 
 }

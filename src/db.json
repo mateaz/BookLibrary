@@ -4,7 +4,7 @@
       "id": 1,
       "book_name": "Nož",
       "author_firstname": "Jo",
-      "author_lastname": "Nesbopromjena",
+      "author_lastname": "Nesbo",
       "userId": 2
     },
     {
@@ -12,7 +12,7 @@
       "book_name": "Derviš i smrt",
       "author_firstname": "Meša",
       "author_lastname": "Selimović",
-      "userId": ""
+      "userId": 1
     },
     {
       "id": 3,
@@ -26,13 +26,20 @@
       "book_name": "Čovjek od kestena",
       "author_firstname": "Soren",
       "author_lastname": "Sveistrup",
-      "userId": 1
+      "userId": ""
     },
     {
       "id": 5,
       "book_name": "Muškarci koji mrze žene",
       "author_firstname": "Stieg",
       "author_lastname": "Larsson",
+      "userId": 2
+    },
+    {
+      "id": 6,
+      "book_name": "Paklena naranča",
+      "author_firstname": "Anthony",
+      "author_lastname": "Burgess",
       "userId": ""
     }
   ],
@@ -44,10 +51,16 @@
       "id": 1
     },
     {
-      "date_of_birth": "23/10/2021",
-      "user_lastname": "asšpdkačls.",
+      "date_of_birth": "13/10/2021",
+      "user_lastname": "Matić",
       "user_firstname": "Damir",
       "id": 2
+    },
+    {
+      "date_of_birth": "08/01/2014",
+      "user_lastname": "Tifannys",
+      "user_firstname": "Sky",
+      "id": 3
     }
   ]
 }

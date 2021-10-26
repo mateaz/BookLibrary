@@ -1,19 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {updateBook, getAllBooks, createBook} from "../../crud/http-methods-books";
-import {Form, Button} from 'react-bootstrap';
+import {getAllUsers} from "../../crud/http-methods-users";
 
-import {ModalComponent, Container} from './partials';
+import {Button} from 'react-bootstrap';
+
+import {ModalComponent, Container, FormComponent} from './partials';
 
 export default class BookList extends React.Component {
     state = {
         books: [],
+        users: [],
         active: 'all-books',
         alldata: [],
         nextId: '',
-        targetIDs: [],
         filter: false,
-        showID: [],
         openModal: false,
         selectedFeature: {
             id: '',
@@ -26,9 +27,10 @@ export default class BookList extends React.Component {
 
      componentDidMount () {
         getAllBooks().then(res => {this.setState({books: res.data}); this.setState({alldata: res.data})});
+        getAllUsers().then(res => this.setState({users: res.data}));
     };
 
-    editData = (data) => {
+    editData = data => {
         data['id'] = this.state.selectedFeature['id'];
         updateBook(data['id'], data)
             .then(() => {
@@ -52,8 +54,7 @@ export default class BookList extends React.Component {
     updateData = () => {
         if (this.state.filter) {
             getAllBooks().then(res => {this.setState({alldata: res.data})});
-        } else getAllBooks().then(res => {this.setState({books: res.data}); this.setState({alldata: res.data})});
-        
+        } else getAllBooks().then(res => {this.setState({books: res.data}); this.setState({alldata: res.data})});  
     };
 
     openModalEdit = (selected) => {
@@ -92,7 +93,6 @@ export default class BookList extends React.Component {
             this.setState({books: this.state.alldata});
             this.setState({filter: false})
         };
-
         this.setState({active: e.target.getAttribute('id')})
     };
 
@@ -103,12 +103,20 @@ export default class BookList extends React.Component {
                 <Button className={`button-book ${this.state.active === 'all-books' ? 'button-active' : ''}`} id="all-books" onClick={(e)=> this.filterData(e)}>Sve knjige</Button>
                 <Button className={`button-book  ${this.state.active === 'filter-books' ? 'button-active' : ''}`}  id="filter-books" onClick={(e)=> this.filterData(e)}>Posuđene knjige</Button>
 
-                <Container data = {this.state.books} openModalEdit = {this.openModalEdit}/>
+                <Container data = {this.state.books} openModalEdit = {this.openModalEdit} usersData = {this.state.active === 'filter-books' ?  this.state.users : []}            
+               
+                />
                 <ModalComponent 
                     show={this.state.openModal}
                     handleClose={this.closeModalEdit}
-                    attributes = {this.state.selectedFeature}
-                    submitData = {this.saveSubmitedData}
+                    /*attributes = {this.state.selectedFeature}
+                    submitData = {this.saveSubmitedData}*/
+                    child={
+                        <FormComponent
+                            attributes = {this.state.selectedFeature}
+                            submitData = {this.saveSubmitedData}
+                        />
+                    }
                 />
           </div>   
         )

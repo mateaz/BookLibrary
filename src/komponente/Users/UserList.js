@@ -2,16 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {updateUser, getAllUsers, createUser} from "../../crud/http-methods-users";
 import {Button} from 'react-bootstrap';
-
-
 import {ModalComponent, Container} from './partials';
 
 export default class UserList extends React.Component {
     state = {
         users: [],
         nextId: '',
-        targetIDs: [],
-        showID: [],
         openModal: false,
         selectedFeature: {
             id: '',
@@ -69,7 +65,7 @@ export default class UserList extends React.Component {
     openModalAdd = () => {
         const nextValueId = Math.max(...this.state.users.map(o => o.id), 0)+1;
         this.setState({nextId: nextValueId})
-        this.openModalEdit({id: nextValueId, user_firstname: '', user_lastname: '', date_of_birth: ''});
+        this.openModalEdit({id: nextValueId, userName: '', date_of_birth: ''});
     };
 
     render() {

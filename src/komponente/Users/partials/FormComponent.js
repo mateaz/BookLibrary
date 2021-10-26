@@ -94,7 +94,7 @@ export default function FormComponent ( {attributes, submitData }) {
         <div className="invalid-feedback">{errors.date_of_birth?.message}</div>
       </Form.Group>
       <Button variant="primary" type="submit">
-        Submit
+        Potvrdi
       </Button>
     </Form>
   );

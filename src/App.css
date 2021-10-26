@@ -84,6 +84,7 @@
 
 .vertical-line {
   border-left: 2px solid black;
+  margin: 0 5px;
 }
 
 .userinterface {
@@ -92,4 +93,30 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-around; 
+  padding: 25px 25px;
+}
+
+.userinterface .book-card {
+  flex-basis: 45%;
+  padding: 5px;
+}
+
+ul {
+  display: flex;
+    flex-basis: 100%;
+    background: black;
+    color: white;
+    align-items: center;
+    list-style: none;
+    justify-content: space-evenly;
+    height: 50px;
+    width: 100%;
+}
+
+ul li {
+  flex-basis: 25%;
+}
+
+ul li  a {
+  color: white;
 }

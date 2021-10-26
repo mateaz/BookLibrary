@@ -20,13 +20,11 @@ export default function Find ( {onSubmit}) {
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Form.Group className="mb-3">
-        <Form.Label>Pretraži korisnika prema njegovom jedinstvenom identifikatoru (ID)</Form.Label>
+        <Form.Label>Pretraži korisnika prema ID-u</Form.Label>
         <Form.Control type="text" placeholder="Id zapisa" {...register('id')} className={`form-control ${errors.id ? 'is-invalid' : ''}`}/>
         <div className="invalid-feedback">{errors.id?.message}</div>
       </Form.Group>
-      <Button variant="primary" type="submit">
-        Pretraži
-      </Button>
+      <Button variant="primary" type="submit">Pretraži</Button>
     </Form>
   );
 };

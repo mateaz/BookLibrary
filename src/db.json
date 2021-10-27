@@ -26,7 +26,7 @@
       "book_name": "Čovjek od kestena",
       "author_firstname": "Soren",
       "author_lastname": "Sveistrup",
-      "userId": ""
+      "userId": 4
     },
     {
       "id": 5,
@@ -41,52 +41,32 @@
       "author_firstname": "Anthony",
       "author_lastname": "Burgess",
       "userId": ""
-    },
-    {
-      "id": 7,
-      "book_name": "Test",
-      "author_firstname": "test",
-      "author_lastname": "tes",
-      "userId": ""
-    },
-    {
-      "id": 8,
-      "book_name": "ads",
-      "author_firstname": "asd",
-      "author_lastname": "asd",
-      "userId": ""
     }
   ],
   "users": [
     {
-      "date_of_birth": "2021-10-12",
-      "user_lastname": "Matić",
-      "user_firstname": "Antonia",
+      "date_of_birth": "1998-10-12",
+      "user_lastname": "Perić",
+      "user_firstname": "Pero",
       "id": 1
     },
     {
-      "date_of_birth": "2021-10-04",
+      "date_of_birth": "1999-10-04",
       "user_lastname": "Matić",
-      "user_firstname": "Damir",
+      "user_firstname": "Mato",
       "id": 2
     },
     {
-      "date_of_birth": "2021-07-17",
-      "user_lastname": "Tifannys",
-      "user_firstname": "Sky",
+      "date_of_birth": "2002-07-17",
+      "user_lastname": "Ivanić",
+      "user_firstname": "Ivan",
       "id": 3
     },
     {
-      "date_of_birth": "2021-10-15",
-      "user_lastname": "fg",
-      "user_firstname": "dg",
+      "date_of_birth": "1994-10-15",
+      "user_lastname": "Antić",
+      "user_firstname": "Ante",
       "id": 4
-    },
-    {
-      "date_of_birth": "2021-10-08",
-      "user_lastname": "asdas",
-      "user_firstname": "asdas",
-      "id": 5
     }
   ]
 }

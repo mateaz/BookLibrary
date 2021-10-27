@@ -1,27 +1,42 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {BrowserRouter as Router, Route, Link, Switch} from 'react-router-dom';
+import { Splide, SplideSlide } from '@splidejs/react-splide';
+
+import '@splidejs/splide/dist/css/splide.min.css';
 
 import {BookList, UserList, Interface} from './komponente';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function App() {
-
+  const [clickedLink, setClickedLink] = useState('');
   return (
     <Router>
-      <div>
-        <ul>
+      <div className="book-library-app">
+        <ul className="nav-header">
           <li>
-            <Link to="/books">Knjige</Link>
+            <Link onClick={()=> setClickedLink('books')} className={clickedLink === 'books'? 'clickedLink' : null} to="/books">Knjige</Link>
           </li>
           <li>
-            <Link to="/users">Korisnici</Link>
+            <Link onClick={()=> setClickedLink('users')} className={clickedLink === 'users'? 'clickedLink' : null} to="/users">Korisnici</Link>
           </li>
           <li>
-            <Link to="/posudi-vrati">Posudi/vrati knjigu</Link>
+            <Link onClick={()=> setClickedLink('posudi-vrati')} className={clickedLink === 'posudi-vrati'? 'clickedLink' : null}  to="/posudi-vrati">Posudi/vrati knjigu</Link>
           </li>
         </ul>
-
+        <div>
+        <Splide options={{rewind: true, gap: '1rem'}}>
+          <SplideSlide>
+            <div id="splideOne" className="splide-background"></div>
+          </SplideSlide>
+          <SplideSlide>
+            <div id="splideTwo" className="splide-background"></div>
+          </SplideSlide>
+          <SplideSlide>
+            <div id="splideThree" className="splide-background"></div>
+          </SplideSlide>
+        </Splide>
+        </div>
         <Switch>
           <Route path="/books">
             <BookList />

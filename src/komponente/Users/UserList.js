@@ -1,8 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {updateUser, getAllUsers, createUser} from "../../crud/http-methods-users";
-import {Button} from 'react-bootstrap';
+import {Button, Alert} from 'react-bootstrap';
 import {ModalComponent, Container} from './partials';
+import {BsFillPersonPlusFill} from 'react-icons/bs';
 
 export default class UserList extends React.Component {
     state = {
@@ -14,6 +14,9 @@ export default class UserList extends React.Component {
             name: '',
             author:'',
         },
+        showAlert: false,
+        variant: '',
+        messageVariant: '',
     };
 
     componentDidMount () {
@@ -24,11 +27,10 @@ export default class UserList extends React.Component {
         data['id'] = this.state.selectedFeature['id'];
         updateUser(data['id'], data)
             .then(() => {
-               // showAlert("success", "Update success");
                 this.updateData();
                 this.closeModalEdit();
             })
-            .catch((error) => /*showAlert("error", "Update failed"));*/ console.log(error));
+            .catch((error) =>console.log(error));
     };
 
     addData = (data) => {
@@ -37,8 +39,9 @@ export default class UserList extends React.Component {
             .then(() => {
                 this.updateData();
                 this.closeModalEdit();
+                this.showMessageAlert('success', 'Uspješno ste dodali novog korisnika!')
             })
-            .catch((error) => /*showAlert("error", "Update failed"));*/ console.log(error));
+            .catch(() =>this.showMessageAlert('warning', 'Nešto je pošlo po krivu. Pokušajte ponovno.'));
     };
 
     updateData = () => {
@@ -68,10 +71,26 @@ export default class UserList extends React.Component {
         this.openModalEdit({id: nextValueId, userName: '', date_of_birth: ''});
     };
 
+    showMessageAlert = (variant, message) => {
+        this.setState({showAlert: true});
+        this.setState({variant: variant});
+        this.setState({messageVariant: message})
+    };
+
     render() {
         return (        
             <div>  
-                <Button variant="outlined" color="primary" onClick={this.openModalAdd}>Add new</Button>
+                <Alert show={this.state.showAlert} variant={this.state.variant}>
+                    <p>{this.state.messageVariant}</p>
+                    <div className="d-flex justify-content-end">
+                        <Button onClick={() => this.setState({showAlert: false})} variant="outline-success">
+                            Zatvori
+                        </Button>
+                    </div>
+                </Alert> 
+                <div className="buttons-list">
+                    <Button variant="outlined" color="primary" className='button-custom' onClick={this.openModalAdd}>Dodaj novog korisnika <BsFillPersonPlusFill/></Button>
+                </div>
                 <Container 
                     data = {this.state.users}
                     openModalEdit = {this.openModalEdit}
@@ -84,13 +103,4 @@ export default class UserList extends React.Component {
                 />
           </div>   
         )
-}
-}
-
-/*BookList.propTypes={
-    propsconsole: PropTypes.string, 
-    propsname: PropTypes.string,
-    posts: PropTypes.array,
-    user: PropTypes.array,
-    comments: PropTypes.array
-};*/
+}};

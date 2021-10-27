@@ -1,8 +1,8 @@
 import React from 'react';
 import Button from './Button';
-import {FiEdit} from 'react-icons/fi';
+import PropTypes from 'prop-types';
 
-export default function Container({data, openModalEdit, onClickFun, attributes, usersData}) {
+export default function Container({data, openModalEdit, iconButton, usersData}) {
   return (
     <div className="list-books">
         {data.map(feature => {
@@ -13,17 +13,26 @@ export default function Container({data, openModalEdit, onClickFun, attributes, 
             const { author_lastname } = feature;         
             return (
                 <div key={id} className="book-card">
-                    <p className="book_name-book">{book_name}</p>
-                    <p className="author_firstname-book">{author_firstname} {author_lastname}</p> 
+                  <div className="book-icon"></div>
+                  <div className="book-info">
+                    <p className="book-name">{book_name}</p>
+                    <p className="book-author">{author_firstname} {author_lastname}</p> 
+                    <Button icon = {iconButton} onClickFun = {openModalEdit} feature={feature}/>
                     {usersData && usersData.map(data => {
                       if(data.id === userId) {
-                        return <p key={data.id}>Knjigu je trenutno posudio korisnik: {data.user_lastname}</p>
-                      }
+                        return <p key={data.id} className="info-about-user">Knjigu je trenutno posudio korisnik: <span>{data.user_firstname} {data.user_lastname}</span></p>
+                      } else return false
                     })}
-                    <Button styleName={'book-list-button'} icon = {<FiEdit />} onClickFun = {openModalEdit} feature={feature}/>
+                    </div>
                 </div>
             )
         })}
     </div>
   );
+};
+Container.propTypes={
+  data: PropTypes.array,
+  openModalEdit: PropTypes.func,
+  iconButton: PropTypes.object,
+  usersData: PropTypes.array,
 };

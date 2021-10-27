@@ -1,122 +1,308 @@
-.App {
-  text-align: center;
+html, body, .book-library-app {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif!important;
+  background-color: #EEEEEE!important;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.nav-header {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  flex-basis: 100%;
   color: white;
+  align-items: center;
+  list-style: none;
+  justify-content: flex-end;
+  height: 50px;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  z-index: 9;
 }
 
-.App-link {
-  color: #61dafb;
+.nav-header li {
+  flex-basis: 25%;
+  text-align: right;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.nav-header li a {
+  color: white;
+  font-size: 18px;
+  text-decoration: none;
+  line-height: 1;
+  position: relative;
+  z-index: 0;
+  padding: 5px 10px;
+  overflow: hidden;
+  transition: color .3s ease-out;
+}
+.nav-header li a::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 100%;
+  background-image: linear-gradient(60deg, #89043D 0%, #861657 100%);
+  transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.nav-header li a:hover::after, .clickedLink::after {
+    left: 0;
+    right: auto;
+    width: 100%;
+}
+
+.clickedLink::after {
+  left: 0!important;
+  right: auto!important;
+  width: 100%!important;
+}
+
+.splide-background {
+ background-size: cover;
+  height: 30vw;
+  
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#splideOne {
+  background-image: url(../src/img/1.png);
+}
+
+#splideTwo {
+  background-image: url(../src/img/2.png);
+}
+
+#splideThree {
+  background-image: url(../src/img/3.png);
+}
+button:focus {
+  box-shadow: unset!important;
+}
+
+.button-default {
+  background-color: #861454;
+  color: white;
+  box-shadow: 0px 0px 4px black;
+  border: none;
+  font-size: 20px;
+  margin-top: 10px;
 }
 
 
+/*Container.js*/
+/*Book*/
 .list-books {
   display: flex;
   flex-direction: row;
   flex-basis: 100%;
-  width: 85%;
+  width: 100%;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin: auto;
-  margin-top: 25px;
+  padding: 10px 15px;
 }
 
-.list-books div {
+.list-books .book-card {
   flex-basis: 30%;
   text-align: center;
+  border-radius: 10px;
+  min-height: 150px;
+  height: max-content;
+  padding-bottom: 5px;
 }
 
 .book-card {
   box-shadow: 0px 0px 2px 0px;
   margin-bottom: 10px;
-  max-height: 200px;
+  background-color: white;
 }
 
-.name-book {
+
+.book-icon {
+  background-repeat: no-repeat;
+  background-position: right;
+  background-image: url(./img/book.png);
+  height: 150px;
+  background-size: cover;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.book-info p {
+  margin: 0px;
+}
+.book-name {
   font-weight: 600;
 }
-
-.author-book {
+.book-author {
   font-size: 14px;
 }
 
-.button-active {
-  background-color: black!important;
+.info-about-user {
+  font-size: 13px;
+  text-align: left;
+  padding: 10px 5px;
 }
 
-.red {
-  background-color: red;
-  flex-basis: 45%;
+.info-about-user span {
+  color: #861657;
+  font-weight: 600;
 }
 
-.blue {
-  background-color: blue;
-  flex-basis: 45%;
+/*Find.js*/
+.find-users-books {
+  background: white;
+  padding: 10px 10%;
+  /* text-align: center; */
+  display: flex;
+  margin: auto;
+  justify-content: space-evenly;
+  align-items: baseline;
 }
 
+.find-users-books .mb-3{
+  width: 50%;
+  margin: 0px!important;
+}
+.find-users-books label {
+  display: none;
+}
+
+/*BookList*/
+.buttons-list {
+  display: flex;
+  justify-content: space-between;
+  flex-basis: 100%;
+  background-color: white;
+  padding: 10px 25px;
+}
+
+.button-custom {
+  font-size: 14px!important;
+  font-weight: 600!important;
+  border-radius: 0px!important;
+  background: unset!important;
+  border: 1px solid #861657!important;
+  color: white!important;
+  position: relative;
+  text-decoration: none;
+  line-height: 1;
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+  transition: color .3s ease-out;
+}
+
+.button-custom:after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  height: 100%;
+  background-image: linear-gradient(60deg, #861657 0%, #89043D 100%);
+  transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  left: 0;
+  right: auto;
+  width: 100%;
+}
+
+.button-custom:hover:after {
+  right: 0;
+  width: 0;
+}
+
+.button-custom:hover {
+  color: #89043D!important;
+  border: 1px solid #89043D!important;
+}
+
+.button-custom.button-active {
+  border: 1px solid #8E443D!important;
+}
+
+.button-custom.button-active:hover{
+  color: #8E443D!important;
+}
+.button-custom.button-active:after {
+  background-image: linear-gradient(60deg, black 0%, #8E443D 100%);
+}
+
+/*Interface*/
+#interface {
+  width: 100%;
+  margin: auto;
+  height: 100%;
+}
 .vertical-line {
   border-left: 2px solid black;
   margin: 0 5px;
 }
-
 .userinterface {
   display: flex;
   flex-basis: 100%;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-around; 
-  padding: 25px 25px;
 }
 
+.userinterface-div-content {
+  flex-basis: 50%;
+  width: 50%;
+}
+
+.userinterface-div-content .userinterface-message-p {
+  font-size: 20px;
+  padding: 5px 12px;
+  margin: 0px;
+  text-align: center;
+  color: #87114f;
+}
 .userinterface .book-card {
   flex-basis: 45%;
-  padding: 5px;
 }
-
-ul {
+.modal-return-borrow-buttons {
   display: flex;
-    flex-basis: 100%;
-    background: black;
-    color: white;
-    align-items: center;
-    list-style: none;
-    justify-content: space-evenly;
-    height: 50px;
-    width: 100%;
+  justify-content: space-evenly;
 }
 
-ul li {
-  flex-basis: 25%;
+/*Container*/
+/*User*/
+.book-card .user-icon {
+  background-repeat: no-repeat;
+  background-position: right;
+  background-image: url(./img/PersonFill.svg);
+  height: 55px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background-color: #45B69C;
 }
 
-ul li  a {
-  color: white;
+.user-info {
+  height: 70%;
 }
+
+.user-info p {
+  margin: 0px;
+}
+
+.user-info .name, .name-book {
+  font-weight: 600;
+}
+
+
+/**/
+
+
+
+
+
+
+
+
+
+
+

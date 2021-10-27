@@ -3,6 +3,7 @@ import {Form, Button} from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
+import PropTypes from 'prop-types';
 
 export default function FormComponent ( {attributes, submitData }) {
   const [initData, setData] = useState();
@@ -28,9 +29,6 @@ export default function FormComponent ( {attributes, submitData }) {
   });
 
   const onSubmit = data => {
-   // console.log(data)
-
-  // console.log(initData)
     data.userId = initData.userId;
     if (!initData.book_name) {
       submitData(data, 'add');
@@ -40,7 +38,7 @@ export default function FormComponent ( {attributes, submitData }) {
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Form.Group className="mb-3">
-        <Form.Label>Id</Form.Label>
+        <Form.Label>Id knjige</Form.Label>
         <Form.Control type="text" disabled={!!attributes.id} placeholder="Id zapisa" {...register('id')} id="id-feature" defaultValue={attributes.id}  className={`form-control ${errors.id ? 'is-invalid' : ''}`}/>
       </Form.Group>
       <Form.Group className="mb-3">
@@ -58,10 +56,14 @@ export default function FormComponent ( {attributes, submitData }) {
         <Form.Control type="text" placeholder="Prezime autora" {...register('author_lastname')} id="author_lastname-feature" defaultValue={attributes.author_lastname}  className={`form-control ${errors.author_lastname ? 'is-invalid' : ''}`}/>
         <div className="invalid-feedback">{errors.author_lastname?.message}</div>
       </Form.Group>
-      <Button variant="primary" type="submit">
-        Submit
+      <Button type="submit" className='button-custom'>
+        U redu
       </Button>
     </Form>
   );
 };
 
+FormComponent.propTypes={
+  attributes: PropTypes.object, 
+  submitData: PropTypes.func,
+};

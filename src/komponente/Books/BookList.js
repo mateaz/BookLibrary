@@ -1,9 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {updateBook, getAllBooks, createBook} from "../../crud/http-methods-books";
 import {getAllUsers} from "../../crud/http-methods-users";
-
-import {Button} from 'react-bootstrap';
+import {BsFillPlusSquareFill} from 'react-icons/bs'
+import {FiEdit} from 'react-icons/fi';
+import {Button, Alert} from 'react-bootstrap';
 
 import {ModalComponent, Container, FormComponent} from './partials';
 
@@ -23,6 +23,9 @@ export default class BookList extends React.Component {
             author_lastname: '',
             userId: '',
         },
+        showAlert: false,
+        variant: '',
+        messageVariant: '',
     };
 
      componentDidMount () {
@@ -34,21 +37,22 @@ export default class BookList extends React.Component {
         data['id'] = this.state.selectedFeature['id'];
         updateBook(data['id'], data)
             .then(() => {
-               // showAlert("success", "Update success");
+                
                 this.updateData();
                 this.closeModalEdit();
             })
-            .catch((error) => /*showAlert("error", "Update failed"));*/ console.log(error));
+            .catch((error) => console.log(error));
     };
 
     addData = (data) => {
         data['id'] = this.state.nextId;
         createBook(data)
             .then(() => {
+                this.showMessageAlert('success', 'Uspješno ste dodali novu knjigu!')
                 this.updateData();
                 this.closeModalEdit();
             })
-            .catch((error) => /*showAlert("error", "Update failed"));*/ console.log(error));
+            .catch(() =>this.showMessageAlert('warning', 'Nešto je pošlo po krivu. Pokušajte ponovno.'));
     };
 
     updateData = () => {
@@ -85,7 +89,7 @@ export default class BookList extends React.Component {
             let array = this.state.alldata.filter((item) => {
                 if( item.userId !== '') {
                     return true
-                };
+                } else return false;
             });
             this.setState({books: array});
             this.setState({filter: true})
@@ -96,21 +100,35 @@ export default class BookList extends React.Component {
         this.setState({active: e.target.getAttribute('id')})
     };
 
+    showMessageAlert = (variant, message) => {
+        this.setState({showAlert: true});
+        this.setState({variant: variant});
+        this.setState({messageVariant: message})
+    };
+
     render() {
         return (        
-            <div>  
-                <Button variant="outlined" color="primary" onClick={this.openModalAdd}>Add new</Button>
-                <Button className={`button-book ${this.state.active === 'all-books' ? 'button-active' : ''}`} id="all-books" onClick={(e)=> this.filterData(e)}>Sve knjige</Button>
-                <Button className={`button-book  ${this.state.active === 'filter-books' ? 'button-active' : ''}`}  id="filter-books" onClick={(e)=> this.filterData(e)}>Posuđene knjige</Button>
-
-                <Container data = {this.state.books} openModalEdit = {this.openModalEdit} usersData = {this.state.active === 'filter-books' ?  this.state.users : []}            
-               
+            <div id="book-list"> 
+                <Alert show={this.state.showAlert} variant={this.state.variant}>
+                    <p>{this.state.messageVariant}</p>
+                    <div className="d-flex justify-content-end">
+                        <Button onClick={() => this.setState({showAlert: false})} variant="outline-success">
+                            Zatvori
+                        </Button>
+                    </div>
+                </Alert>  
+                <div className="buttons-list">
+                    <Button className='button-custom' onClick={this.openModalAdd}>Dodaj novu knjigu <BsFillPlusSquareFill /></Button>
+                    <div>
+                        <Button className={`button-custom ${this.state.active === 'all-books' ? 'button-active' : ''}`} id="all-books" onClick={(e)=> this.filterData(e)}>Sve knjige</Button>
+                        <Button className={`button-custom  ${this.state.active === 'filter-books' ? 'button-active' : ''}`}  id="filter-books" onClick={(e)=> this.filterData(e)}>Posuđene knjige</Button>
+                    </div>
+                </div>
+                <Container iconButton={<FiEdit/>} data = {this.state.books} openModalEdit = {this.openModalEdit} usersData = {this.state.active === 'filter-books' ?  this.state.users : []}
                 />
                 <ModalComponent 
                     show={this.state.openModal}
                     handleClose={this.closeModalEdit}
-                    /*attributes = {this.state.selectedFeature}
-                    submitData = {this.saveSubmitedData}*/
                     child={
                         <FormComponent
                             attributes = {this.state.selectedFeature}
@@ -122,10 +140,3 @@ export default class BookList extends React.Component {
         )
 }};
 
-/*BookList.propTypes={
-    propsconsole: PropTypes.string, 
-    propsname: PropTypes.string,
-    posts: PropTypes.array,
-    user: PropTypes.array,
-    comments: PropTypes.array
-};*/

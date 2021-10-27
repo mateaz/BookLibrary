@@ -27,13 +27,19 @@ export default function App() {
         <div>
         <Splide options={{rewind: true, gap: '1rem'}}>
           <SplideSlide>
-            <div id="splideOne" className="splide-background"></div>
+            <div id="splideOne" className="splide-background">
+              <h3>Pretraži i pregledaj knjige</h3>
+            </div>
           </SplideSlide>
           <SplideSlide>
-            <div id="splideTwo" className="splide-background"></div>
+            <div id="splideTwo" className="splide-background">
+              <h3>Pretraži i pregledaj korisnike</h3>
+            </div>
           </SplideSlide>
           <SplideSlide>
-            <div id="splideThree" className="splide-background"></div>
+            <div id="splideThree" className="splide-background">
+              <h3>Posudi i vrati knjigu</h3>
+            </div>
           </SplideSlide>
         </Splide>
         </div>

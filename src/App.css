@@ -63,11 +63,17 @@ html, body, .book-library-app {
 }
 
 .splide-background {
- background-size: cover;
+  background-size: cover;
+  display: flex;
   height: 30vw;
-  
   background-position: center;
+  color: #ffffffa1;
+  align-items: center;
   background-repeat: no-repeat;
+}
+
+.splide-background h3 {
+  padding-left: 15%;
 }
 
 #splideOne {

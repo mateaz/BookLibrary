@@ -3,9 +3,10 @@ import Modal from 'react-bootstrap/Modal';
 import FormComponent from './FormComponent';
 import PropTypes from 'prop-types';
 
-export default function ModalComponent({show, handleClose, attributes, submitData}) {
+export default function ModalComponent({isShowing, onClickHide, attributes, submitData}) {
   return (
-    <Modal show={show} onHide={handleClose}>
+    //ova dva od modala su preimenovana za show i oHide
+    <Modal show={isShowing} onHide={onClickHide}>
         <Modal.Header closeButton>
           <Modal.Title>Izmijeni/dodaj podatke</Modal.Title>
         </Modal.Header>
@@ -21,8 +22,8 @@ export default function ModalComponent({show, handleClose, attributes, submitDat
 
 
 ModalComponent.propTypes={
-  show: PropTypes.bool, 
-  handleClose: PropTypes.func,
+  isShowing: PropTypes.bool, 
+  onClickHide: PropTypes.func,
   attributes: PropTypes.object,
   submitData: PropTypes.func,
 };

@@ -8,7 +8,7 @@ export default class UserList extends React.Component {
     state = {
         users: [],
         nextId: '',
-        openModal: false,
+        showModal: false,
         selectedFeature: {
             id: '',
             name: '',
@@ -28,7 +28,7 @@ export default class UserList extends React.Component {
         updateUser(data['id'], data)
             .then(() => {
                 this.updateData();
-                this.closeModalEdit();
+                this.handleClickHideModal();
             })
             .catch((error) =>console.log(error));
     };
@@ -38,7 +38,7 @@ export default class UserList extends React.Component {
         createUser(data)
             .then(() => {
                 this.updateData();
-                this.closeModalEdit();
+                this.handleClickHideModal();
                 this.showMessageAlert('success', 'Uspješno ste dodali novog korisnika!')
             })
             .catch(() =>this.showMessageAlert('warning', 'Nešto je pošlo po krivu. Pokušajte ponovno.'));
@@ -48,15 +48,16 @@ export default class UserList extends React.Component {
         getAllUsers().then(res => this.setState({users: res.data}));
     };
 
-    openModalEdit = (selected) => {
-        this.setState({openModal: !this.state.openModal})
+    handleClickSetSelected = (selected) => {
+        console.log(selected)
+        this.setState({showModal: !this.state.showModal})
         if (selected !== this.state.selectedFeature) {
             this.setState({selectedFeature: selected})
          };
     };
 
-    closeModalEdit = () => {
-        this.setState({openModal: false})
+    handleClickHideModal = () => {
+        this.setState({showModal: false})
     };
 
     saveSubmitedData = (submitedData, b) => {
@@ -65,10 +66,10 @@ export default class UserList extends React.Component {
         } else this.addData(submitedData);
     };
 
-    openModalAdd = () => {
+    handleClickOpenModalAdd = () => {
         const nextValueId = Math.max(...this.state.users.map(o => o.id), 0)+1;
         this.setState({nextId: nextValueId})
-        this.openModalEdit({id: nextValueId, userName: '', date_of_birth: ''});
+        this.handleClickSetSelected({id: nextValueId, userName: '', date_of_birth: ''});
     };
 
     showMessageAlert = (variant, message) => {
@@ -89,15 +90,17 @@ export default class UserList extends React.Component {
                     </div>
                 </Alert> 
                 <div className="buttons-list">
-                    <Button variant="outlined" color="primary" className='button-custom' onClick={this.openModalAdd}>Dodaj novog korisnika <BsFillPersonPlusFill/></Button>
+                    <Button variant="outlined" color="primary" className='button-custom' onClick={this.handleClickOpenModalAdd}>Dodaj novog korisnika <BsFillPersonPlusFill/></Button>
                 </div>
                 <Container 
                     data = {this.state.users}
-                    openModalEdit = {this.openModalEdit}
+                    onClickSetSelected = {this.handleClickSetSelected}
                 />
                 <ModalComponent 
-                    show={this.state.openModal}
-                    handleClose={this.closeModalEdit}
+                    isShowing={this.state.showModal}
+                    onClickHide={this.handleClickHideModal}
+                    //ova dva od modala su preimenovana
+                   
                     attributes = {this.state.selectedFeature}
                     submitData = {this.saveSubmitedData}
                 />

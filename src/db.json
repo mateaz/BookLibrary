@@ -19,7 +19,7 @@
       "book_name": "Ciganin, ali najljepši",
       "author_firstname": "Kristian",
       "author_lastname": "Novak",
-      "userId": ""
+      "userId": 1
     },
     {
       "id": 4,
@@ -45,7 +45,7 @@
   ],
   "users": [
     {
-      "date_of_birth": "1998-10-12",
+      "date_of_birth": "1998-10-21",
       "user_lastname": "Perić",
       "user_firstname": "Pero",
       "id": 1

@@ -13,7 +13,6 @@ export default function FormComponent ( {attributes, submitData }) {
     book_name: Yup.string().required('Naziv knjige je obavezan unos'),
     author_firstname: Yup.string().required('Ime autora je obavezan unos'),
     author_lastname: Yup.string().required('Prezime autora je obavezan unos')
-
   });
 
   useEffect(() => {

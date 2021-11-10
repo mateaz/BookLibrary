@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 import * as Yup from 'yup';
 
-export default function FormComponent ( {attributes, submitData }) {
+export default function FormComponent ({attributes, submitData }) {
   const [initData, setData] = useState();
   const [startDate, setStartDate] = useState();
 
@@ -42,11 +42,11 @@ export default function FormComponent ( {attributes, submitData }) {
     let dateBirth = data.date_of_birth;
     let dateString = moment(dateBirth).format('YYYY-MM-DD');
     data.date_of_birth = dateString;
-
     if (!initData.user_firstname) {
       submitData(data, 'add');
     } else submitData(data, 'edit');
   };
+  
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Form.Group className="mb-3">

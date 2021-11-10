@@ -15,7 +15,7 @@ export default class Interface extends React.Component {
         showAlert: false,
         variant: '',
         messageVariant: '',
-        openModal: false,
+        showModal: false,
         selectedFeature: {
             id: '',
             book_name: '',
@@ -60,13 +60,13 @@ export default class Interface extends React.Component {
         this.setState({restBooks: notborrowed})
     };
 
-    openModalEdit = selected => {
-        this.setState({openModal: true})
+    handleClickSetSelected = selected => {
+        this.setState({showModal: true})
         this.setState({selectedFeature: selected}) 
     };
 
-    closeModalEdit = () => {
-        this.setState({openModal: false})
+    handleClickHideModal = () => {
+        this.setState({showModal: false})
     };
     
     returnBook = () => {
@@ -77,11 +77,11 @@ export default class Interface extends React.Component {
             .then(() => {
                 this.showMessageAlert('success', 'Uspješno ste vratili knjigu');
                 this.getData(userID);
-                this.closeModalEdit();
+                this.handleClickHideModal();
             })
             .catch(() => {
                 this.showMessageAlert('warning', 'Nešto je pošlo po krivu. Pokušajte ponovno');
-                this.closeModalEdit();
+                this.handleClickHideModal();
             });
     }
 
@@ -92,11 +92,11 @@ export default class Interface extends React.Component {
         .then(() => {
             this.showMessageAlert('success', 'Uspješno ste posudili knjigu');
             this.getData(this.state.searchedUser['id']);
-            this.closeModalEdit();
+            this.handleClickHideModal();
         })
         .catch(() => {
             this.showMessageAlert('warning', 'Nešto je pošlo po krivu. Pokušajte ponovno');
-            this.closeModalEdit();
+            this.handleClickHideModal();
         });
     };
 
@@ -124,7 +124,7 @@ export default class Interface extends React.Component {
                         {this.state.borrowedBooks.length > 0 ? 
                         <div className="userinterface-div-content" >
                             <p className="userinterface-message-p">Za vratiti</p>
-                            <Container data = {this.state.borrowedBooks} openModalEdit = {this.openModalEdit} iconButton={<BsFillDashCircleFill/>}/>
+                            <Container data = {this.state.borrowedBooks} onClickSetSelected = {this.handleClickSetSelected} iconButton={<BsFillDashCircleFill/>}/>
                         </div>
                          : 
                          <div className="userinterface-div-content">
@@ -135,7 +135,7 @@ export default class Interface extends React.Component {
                         {this.state.restBooks.length > 0 ? 
                         <div className="userinterface-div-content" >
                         <p className="userinterface-message-p">Za posuditi</p>
-                                <Container data = {this.state.restBooks} openModalEdit = {this.openModalEdit} iconButton={<BsFillPlusCircleFill/>}/>
+                                <Container data = {this.state.restBooks} onClickSetSelected = {this.handleClickSetSelected} iconButton={<BsFillPlusCircleFill/>}/>
                                 </div>
                             : 
                             <div className="userinterface-div-content" >
@@ -145,14 +145,14 @@ export default class Interface extends React.Component {
                     </div>)
                 }
                 <ModalComponent 
-                    show={this.state.openModal}
-                    handleClose={this.closeModalEdit}
+                    isShowing={this.state.showModal}
+                    onClickHide={this.handleClickHideModal}
                     child = {this.state.selectedFeature.userId ? 
                         ( <div className='modal-return-borrow'>
                             <div>Za povratak knjige u knjižnicu kliknite Da</div>
                             <div className='modal-return-borrow-buttons'>
                                 <Button className='button-custom' onClick={this.returnBook}>Da</Button>
-                                <Button className='button-custom' onClick={this.closeModalEdit}>Odustani</Button>
+                                <Button className='button-custom' onClick={this.handleClickHideModal}>Odustani</Button>
                             </div>
                         </div>
                         )
@@ -161,7 +161,7 @@ export default class Interface extends React.Component {
                             <div>Za posudbu knjige kliknite Da</div>
                             <div className='modal-return-borrow-buttons'>
                                 <Button className='button-custom' onClick={this.borrowBook}>Da</Button>
-                                <Button className='button-custom' onClick={this.closeModalEdit}>Odustani</Button>
+                                <Button className='button-custom' onClick={this.handleClickHideModal}>Odustani</Button>
                             </div>
                         </div>
                         )

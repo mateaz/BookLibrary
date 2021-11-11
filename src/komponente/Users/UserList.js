@@ -1,7 +1,7 @@
 import React from 'react';
 import {updateUser, getAllUsers, createUser} from "../../crud/http-methods-users";
 import {Button, Alert} from 'react-bootstrap';
-import {ModalComponent, Container} from './partials';
+import {Container, FormComponent, ModalComponent} from './partials';
 import {BsFillPersonPlusFill} from 'react-icons/bs';
 
 export default class UserList extends React.Component {
@@ -17,6 +17,7 @@ export default class UserList extends React.Component {
         showAlert: false,
         variant: '',
         messageVariant: '',
+        setModalTitle: '',
     };
 
     componentDidMount () {
@@ -51,6 +52,7 @@ export default class UserList extends React.Component {
     handleClickSetSelected = (selected) => {
         console.log(selected)
         this.setState({showModal: !this.state.showModal})
+        this.setState({setModalTitle: 'Izmijeni podatke o korisniku'});
         if (selected !== this.state.selectedFeature) {
             this.setState({selectedFeature: selected})
          };
@@ -70,6 +72,7 @@ export default class UserList extends React.Component {
         const nextValueId = Math.max(...this.state.users.map(o => o.id), 0)+1;
         this.setState({nextId: nextValueId})
         this.handleClickSetSelected({id: nextValueId, userName: '', date_of_birth: ''});
+        this.setState({setModalTitle: 'Dodaj novog korisnika'});
     };
 
     showMessageAlert = (variant, message) => {
@@ -84,25 +87,26 @@ export default class UserList extends React.Component {
                 <Alert show={this.state.showAlert} variant={this.state.variant}>
                     <p>{this.state.messageVariant}</p>
                     <div className="d-flex justify-content-end">
-                        <Button onClick={() => this.setState({showAlert: false})} variant="outline-success">
-                            Zatvori
-                        </Button>
+                        <Button onClick={() => this.setState({showAlert: false})} variant="outline-success">Zatvori</Button>
                     </div>
                 </Alert> 
                 <div className="buttons-list">
                     <Button variant="outlined" color="primary" className='button-custom' onClick={this.handleClickOpenModalAdd}>Dodaj novog korisnika <BsFillPersonPlusFill/></Button>
                 </div>
                 <Container 
-                    data = {this.state.users}
+                    userList = {this.state.users}
                     onClickSetSelected = {this.handleClickSetSelected}
                 />
                 <ModalComponent 
+                    modalTitle = {this.state.setModalTitle}
                     isShowing={this.state.showModal}
                     onClickHide={this.handleClickHideModal}
-                    //ova dva od modala su preimenovana
-                   
-                    attributes = {this.state.selectedFeature}
-                    submitData = {this.saveSubmitedData}
+                    children = {
+                        <FormComponent 
+                            attributes = {this.state.selectedFeature}
+                            submitData = {this.saveSubmitedData}
+                        />
+                    }                   
                 />
           </div>   
         )

@@ -2,8 +2,8 @@ import React from 'react';
 import {getUser} from "../../crud/http-methods-users";
 import {updateBook, getAllBooks} from "../../crud/http-methods-books";
 import {Alert, Button} from 'react-bootstrap';
-import {ModalComponent, Container, Find} from './partials';
 import {BsFillPlusCircleFill, BsFillDashCircleFill} from 'react-icons/bs'
+import {Container, Find, ModalComponent} from './partials';
 
 export default class Interface extends React.Component {
     state = {
@@ -145,9 +145,10 @@ export default class Interface extends React.Component {
                     </div>)
                 }
                 <ModalComponent 
-                    isShowing={this.state.showModal}
-                    onClickHide={this.handleClickHideModal}
-                    child = {this.state.selectedFeature.userId ? 
+                    modalTitle = { this.state.selectedFeature.userId ? 'Vrati knjigu?' : 'Posudi knjigu?'}
+                    isShowing = {this.state.showModal}
+                    onClickHide = {this.handleClickHideModal}
+                    children = {this.state.selectedFeature.userId ? 
                         ( <div className='modal-return-borrow'>
                             <div>Za povratak knjige u knjižnicu kliknite Da</div>
                             <div className='modal-return-borrow-buttons'>

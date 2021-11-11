@@ -4,7 +4,8 @@ import {getAllUsers} from "../../crud/http-methods-users";
 import {BsFillPlusSquareFill} from 'react-icons/bs'
 import {Button, Alert} from 'react-bootstrap';
 
-import {ModalComponent, Container, FormComponent} from './partials';
+import {Container, FormComponent, ModalComponent} from './partials';
+//import {ModalComponent} from '../ModalComponent';
 
 export default class BookList extends React.Component {
     state = {
@@ -25,6 +26,7 @@ export default class BookList extends React.Component {
         showAlert: false,
         variant: '',
         messageVariant: '',
+        setModalTitle: '',
     };
 
      componentDidMount () {
@@ -60,7 +62,8 @@ export default class BookList extends React.Component {
     };
 
     handleClickSetSelected = (selected) => {
-        this.setState({showModal: !this.state.showModal})
+        this.setState({showModal: !this.state.showModal});
+        this.setState({setModalTitle: 'Izmijeni podatke o knjizi'});
         if (selected !== this.state.selectedFeature) {
             this.setState({selectedFeature: selected})
          };
@@ -80,6 +83,7 @@ export default class BookList extends React.Component {
         const nextValueId = Math.max(...this.state.alldata.map(o => o.id), 0)+1;
         this.setState({nextId: nextValueId})
         this.handleClickSetSelected({id: nextValueId, book_name: '', author_firstname: '', author_lastname: '', userId: '',});
+        this.setState({setModalTitle: 'Dodaj novu knjigu'});
     };
 
     filterData = (e) => {
@@ -125,9 +129,10 @@ export default class BookList extends React.Component {
                 <Container data = {this.state.books} onClickSetSelected = {this.handleClickSetSelected} usersData = {this.state.active === 'filter-books' ?  this.state.users : []}
                 />
                 <ModalComponent 
+                    modalTitle={this.state.setModalTitle}
                     isShowing={this.state.showModal}
                     onClickHide={this.handleClickHideModal}
-                    child={
+                    children = {
                         <FormComponent
                             attributes = {this.state.selectedFeature}
                             submitData = {this.saveSubmitedData}

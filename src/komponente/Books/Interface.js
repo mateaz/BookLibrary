@@ -26,10 +26,11 @@ export default class Interface extends React.Component {
     };
 
     handleSubmit = data => {
-        getUser(data.id)
+        console.log(data)
+        getUser(data.user_name)
             .then(res => {
                 this.setState({searchedUser: res.data})
-                this.getData(data.id);
+                //this.getData(data.id);
                 this.setState({show: true});
             })
             .catch( () => {

@@ -3,65 +3,65 @@
     {
       "id": 1,
       "book_name": "Nož",
-      "authorName": "Jo Nesbo",
-      "userId": ""
+      "author_firstname": "Jo",
+      "author_lastname": "Nesbo"
     },
     {
       "id": 2,
       "book_name": "Derviš i smrt",
-      "authorName": "Meša Selimović",
-      "userId": 1
+      "author_firstname": "Meša",
+      "author_lastname": "Selimoži"
     },
     {
       "id": 3,
       "book_name": "Ciganin, ali najljepši",
-      "authorName": "Kristian Novak",
-      "userId": 1
+      "author_firstname": "Kristian",
+      "author_lastname": "Nova"
     },
     {
       "id": 4,
       "book_name": "Čovjek od kestena",
-      "authorName": "Soren Sveistrup",
-      "userId": 4
+      "author_firstname": "Soren",
+      "author_lastname": "Sveistrup"
     },
     {
       "id": 5,
       "book_name": "Muškarci koji mrze žene",
-      "authorName": "Stieg Larsson",
-      "userId": ""
+      "author_firstname": "Stieg",
+      "author_lastname": "Larsso"
     },
     {
       "id": 6,
       "book_name": "Paklena naranča",
-      "auhor": "Anthony Burgess",
-      "userId": ""
+      "author_firstname": "Anthony",
+      "author_lastname": "Burgess"
     }
   ],
   "users": [
     {
+      "id": 1,
       "date_of_birth": "1998-10-21",
-      "user_name": "Pero asdasd",
-      "id": 1
+      "user_lastname": "Ivanić",
+      "user_firstname": "Pero"
     },
     {
       "id": 2,
       "date_of_birth": "1999-10-04",
-      "user_name": "Mato Matić"
+      "user_lastname": "Matic",
+      "user_firstname": "Mato"
+      
     },
     {
       "id": 3,
       "date_of_birth": "2002-07-17",
-      "user_name": "Ivan Ivanić"
+      "user_lastname": "Ivanić",
+      "user_firstname": "Ivan"
     },
     {
       "id": 4,
       "date_of_birth": "1994-10-15",
-      "user_name": "Ante Antić"
-    },
-    {
-      "date_of_birth": "2021-11-24",
-      "user_name": "asdas asdas",
-      "id": 5
+      "user_lastname": "Antić",
+      "user_firstname": "Ante"
     }
   ],
   "borrowState": [
@@ -85,5 +85,5 @@
       "userId": 3,
       "bookId": 5
     }
-  ]
+  ]  
 }

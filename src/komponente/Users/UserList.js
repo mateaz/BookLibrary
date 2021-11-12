@@ -11,8 +11,8 @@ export default class UserList extends React.Component {
         showModal: false,
         selectedFeature: {
             id: '',
-            name: '',
-            author:'',
+            user_name: '',
+            date_of_birth:'',
         },
         showAlert: false,
         variant: '',
@@ -25,6 +25,7 @@ export default class UserList extends React.Component {
     };
 
     editData = (data) => {
+        console.log(this.state.selectedFeature)
         data['id'] = this.state.selectedFeature['id'];
         updateUser(data['id'], data)
             .then(() => {

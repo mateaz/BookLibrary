@@ -13,8 +13,8 @@ export default function FormComponent ({attributes, submitData }) {
 
   const validationSchema = Yup.object().shape({
     id: Yup.number().typeError('Unos mora biti broj').positive('Broj mora  biti pozitivan').integer('Broj mora biti cijeli broj'),
-    user_firstname: Yup.string().required('Ime korisnika je obavezan unos'),
-    user_lastname: Yup.string().required('Prezime korisnika je obavezan unos'),
+    user_name: Yup.string().required('Ime i prezime korisnika je obavezan unos'),
+    //user_lastname: Yup.string().required('Prezime korisnika je obavezan unos'),
     date_of_birth: Yup.date().required('Date of Birth is required')
   });
 
@@ -42,7 +42,7 @@ export default function FormComponent ({attributes, submitData }) {
     let dateBirth = data.date_of_birth;
     let dateString = moment(dateBirth).format('YYYY-MM-DD');
     data.date_of_birth = dateString;
-    if (!initData.user_firstname) {
+    if (!initData.user_name) {
       submitData(data, 'add');
     } else submitData(data, 'edit');
   };
@@ -54,15 +54,15 @@ export default function FormComponent ({attributes, submitData }) {
         <Form.Control type="text" disabled={!!attributes.id} placeholder="Id zapisa" {...register('id')} defaultValue={attributes.id}  className={`form-control ${errors.id ? 'is-invalid' : ''}`}/>
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>Ime korisnika</Form.Label>
-        <Form.Control type="text" placeholder="Ime korisnika" {...register('user_firstname')} defaultValue={attributes.user_firstname}  className={`form-control ${errors.user_firstname ? 'is-invalid' : ''}`}/>
-        <div className="invalid-feedback">{errors.user_firstname?.message}</div>
+        <Form.Label>Ime i prezime korisnika</Form.Label>
+        <Form.Control type="text" placeholder="Ime i prezime korisnika" {...register('user_name')} defaultValue={attributes.user_name}  className={`form-control ${errors.user_name ? 'is-invalid' : ''}`}/>
+        <div className="invalid-feedback">{errors.user_name?.message}</div>
       </Form.Group>
-      <Form.Group className="mb-3">
+      {/*<Form.Group className="mb-3">
         <Form.Label>Prezime korisnika</Form.Label>
         <Form.Control type="text" placeholder="Prezime korisnika" {...register('user_lastname')} defaultValue={attributes.user_lastname}  className={`form-control ${errors.user_lastname ? 'is-invalid' : ''}`}/>
         <div className="invalid-feedback">{errors.user_lastname?.message}</div>
-      </Form.Group>
+      </Form.Group>*/}
      
       <Form.Group className="mb-3">
         <Form.Label>Datum rođenja</Form.Label>

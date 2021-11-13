@@ -1,6 +1,6 @@
 import React from 'react';
 import {getUser} from "../../crud/http-methods-users";
-import {updateBook, getAllBooks, getBorrowedBooks} from "../../crud/http-methods-books";
+import {updateBook, getAllBooks, getBorrowedBooks, deleteBorrowedBook} from "../../crud/http-methods-books";
 import {Alert, Button} from 'react-bootstrap';
 import {BsFillPlusCircleFill, BsFillDashCircleFill} from 'react-icons/bs'
 import {Container, Find, ModalComponent} from './partials';
@@ -38,7 +38,7 @@ export default class Interface extends React.Component {
             .then(res => {
                 this.setState({borrowedBooks: res.data}); 
                 //console.log(res.data)
-         // this.filterBooks();
+            this.filterBooks();
             })
             .catch(error => {
                 console.log(error);
@@ -58,14 +58,16 @@ export default class Interface extends React.Component {
             });
     };
 
-   /* getData = () => {
+    getData = () => {
         getBorrowedBooks()
             .then(res => {
-            console.log(res)
-          //this.setState({books: res.data}); 
-          this.filterBooks();
-        });
-    };*/
+                this.setState({borrowedBooks: res.data}); 
+                this.filterBooks();
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    };
 
     filterBooks = () => {
         const notborrowed = this.state.allBooks.filter((el) => {
@@ -79,10 +81,9 @@ export default class Interface extends React.Component {
     };
 
     handleClickSetSelected = (selected) => {
-        console.log(selected)
-       
-     //  this.setState({showModal: true})
-       // this.setState({selectedFeature: selected}) 
+       this.setState({showModal: true})
+       this.setState({selectedFeature: selected}) 
+       console.log(selected)
     };
 
     handleClickHideModal = () => {
@@ -90,11 +91,24 @@ export default class Interface extends React.Component {
     };
     
     returnBook = () => {
-        let userID = this.state.selectedFeature['userId'];
+        //let userID = this.state.selectedFeature['userId'];
         let data = this.state.selectedFeature;
-        data['userId'] = '';
+      //  data['userId'] = '';
 
-        updateBook(data['id'], data)
+        console.log(data)
+
+        deleteBorrowedBook(data.borrowedBookId)
+            .then(() => {
+                this.showMessageAlert('success', 'Uspješno ste vratili knjigu');
+                this.getData();
+                this.handleClickHideModal();
+            })
+            .catch(() => {
+                this.showMessageAlert('warning', 'Nešto je pošlo po krivu. Pokušajte ponovno');
+                this.handleClickHideModal();
+            });
+
+       /* updateBook(data['id'], data)
             .then(() => {
                 this.showMessageAlert('success', 'Uspješno ste vratili knjigu');
               //  this.getData(userID);
@@ -103,7 +117,7 @@ export default class Interface extends React.Component {
             .catch(() => {
                 this.showMessageAlert('warning', 'Nešto je pošlo po krivu. Pokušajte ponovno');
                 this.handleClickHideModal();
-            });
+            });*/
     };
 
     borrowBook = () => {
@@ -150,11 +164,14 @@ export default class Interface extends React.Component {
                             {this.state.searchedUser.map((user, i) => (
                             <div>
                                 <p>{user.userName}</p>
-                                <Container id={user.id} onClickSetSelected = {this.handleClickSetSelected} iconButton={<BsFillPlusCircleFill/>} data={this.state.allBooks.filter(book => {                  
+
+                                <Container id={user.id} onClickSetSelected = {this.handleClickSetSelected} iconButton={<BsFillPlusCircleFill/>} 
+                                data={this.state.allBooks.filter(book => {                  
                                      return this.state.borrowedBooks.some(borrowedBook => {
-                                        if (borrowedBook.userId ===user.id && book.id === borrowedBook.bookId) {
-                                            return book.userId = borrowedBook.userId;
-                                        }})
+                                        if (borrowedBook.userId === user.id && book.id === borrowedBook.bookId) {
+                                            return book.borrowedBookId = borrowedBook.id;
+                                        } 
+                                    })
                                      
                                      })}/>
                             </div>))}
@@ -179,10 +196,10 @@ export default class Interface extends React.Component {
                 }
 
                 <ModalComponent 
-                    modalTitle = { this.state.selectedFeature.userId ? 'Vrati knjigu?' : 'Posudi knjigu?'}
+                    modalTitle = { this.state.selectedFeature.borrowedBookId ? 'Vrati knjigu?' : 'Posudi knjigu?'}
                     isShowing = {this.state.showModal}
                     onClickHide = {this.handleClickHideModal}
-                    children = {this.state.selectedFeature.userId ? 
+                    children = {this.state.selectedFeature.borrowedBookId ? 
                         ( <div className='modal-return-borrow'>
                             <div>Za povratak knjige u knjižnicu kliknite Da</div>
                             <div className='modal-return-borrow-buttons'>

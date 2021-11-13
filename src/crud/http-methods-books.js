@@ -24,5 +24,5 @@ export const getBorrowedBooks = () => {
 };*/
 
 export const deleteBorrowedBook = (id) => {
-    return http.delete(`/borrowState?/${id}`);
+    return http.delete(`/borrowState/${id}`);
 };

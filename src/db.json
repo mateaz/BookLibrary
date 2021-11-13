@@ -2,65 +2,65 @@
   "books": [
     {
       "id": 1,
-      "book_name": "Nož",
-      "authorName": "Jo Nesbo",
-      "userId": ""
+      "bookName": "Nož",
+      "authorName": "Jo Nesbo"
     },
     {
       "id": 2,
-      "book_name": "Derviš i smrt",
-      "authorName": "Meša Selimović",
-      "userId": 1
+      "bookName": "Derviš i smrt",
+      "authorName": "Meša Selimović"
     },
     {
       "id": 3,
-      "book_name": "Ciganin, ali najljepši",
-      "authorName": "Kristian Novak",
-      "userId": 1
+      "bookName": "Ciganin, ali najljepši",
+      "authorName": "Kristian Novak"
     },
     {
       "id": 4,
-      "book_name": "Čovjek od kestena",
-      "authorName": "Soren Sveistrup",
-      "userId": 4
+      "bookName": "Čovjek od kestena",
+      "authorName": "Soren Sveistrup"
     },
     {
       "id": 5,
-      "book_name": "Muškarci koji mrze žene",
-      "authorName": "Stieg Larsson",
-      "userId": ""
+      "bookName": "Muškarci koji mrze žene",
+      "authorName": "Stieg Larsson"
     },
     {
       "id": 6,
-      "book_name": "Paklena naranča",
-      "auhor": "Anthony Burgess",
+      "bookName": "Paklena naranča",
+      "authorName": "Anthony Burgess"
+    },
+    {
+      "id": 7,
+      "bookName": "Nova knjiga",
+      "authorName": "huh",
       "userId": ""
     }
   ],
   "users": [
     {
-      "date_of_birth": "1998-10-21",
-      "user_name": "Pero asdasd",
+      "dateOfBirth": "1998-10-21",
+      "userName": "Pero Ivana",
       "id": 1
     },
     {
-      "id": 2,
-      "date_of_birth": "1999-10-04",
-      "user_name": "Mato Matić"
+      "dateOfBirth": "1999-10-20",
+      "userName": "Mato Matic",
+      "id": 2
     },
     {
       "id": 3,
-      "date_of_birth": "2002-07-17",
-      "user_name": "Ivan Ivanić"
+      "dateOfBirth": "2002-07-17",
+      "userName": "Ivan Ivanić"
     },
     {
       "id": 4,
-      "date_of_birth": "1994-10-15",
-      "user_name": "Ante Antić"
+      "dateOfBirth": "1994-10-15",
+      "userName": "Ante Antić"
     },
     {
-      "date_of_birth": "2021-11-24",
-      "user_name": "asdas asdas",
+      "dateOfBirth": "2021-11-24",
+      "userName": "asdas asdas",
       "id": 5
     }
   ],

@@ -1,16 +1,18 @@
 import React from 'react';
 import {getUser} from "../../crud/http-methods-users";
-import {updateBook, getAllBooks} from "../../crud/http-methods-books";
+import {updateBook, getAllBooks, getBorrowedBooks} from "../../crud/http-methods-books";
 import {Alert, Button} from 'react-bootstrap';
 import {BsFillPlusCircleFill, BsFillDashCircleFill} from 'react-icons/bs'
 import {Container, Find, ModalComponent} from './partials';
 
 export default class Interface extends React.Component {
     state = {
-        searchedUser: '',
-        show: false,
-        books: [],
         borrowedBooks: [],
+        allBooks: [],
+
+        searchedUser:[],
+        show: false,
+        
         restBooks: [],
         showAlert: false,
         variant: '',
@@ -18,19 +20,36 @@ export default class Interface extends React.Component {
         showModal: false,
         selectedFeature: {
             id: '',
-            book_name: '',
-            author_firstname:'',
-            author_lastname: '',
-            userId: '',
+            bookName: '',
+            authorName:'',
         },
     };
 
+    componentDidMount() {
+        getAllBooks()
+            .then(res => {
+                this.setState({allBooks: res.data})
+            })
+            .catch(error => {
+                console.log(error);
+            });
+
+        getBorrowedBooks()
+            .then(res => {
+                this.setState({borrowedBooks: res.data}); 
+                //console.log(res.data)
+         // this.filterBooks();
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    };
+
     handleSubmit = data => {
-        console.log(data)
-        getUser(data.user_name)
+        getUser(data.userName)
             .then(res => {
                 this.setState({searchedUser: res.data})
-                //this.getData(data.id);
+                this.filterBooks();
                 this.setState({show: true});
             })
             .catch( () => {
@@ -39,31 +58,31 @@ export default class Interface extends React.Component {
             });
     };
 
-    getData = e => {
-        getAllBooks().then(res => {
-          this.setState({books: res.data}); 
-          this.filterBooks(e);
+   /* getData = () => {
+        getBorrowedBooks()
+            .then(res => {
+            console.log(res)
+          //this.setState({books: res.data}); 
+          this.filterBooks();
         });
-    };
+    };*/
 
-    filterBooks = e => {
-        let borrowed = this.state.books.filter((item) => {
-            if( item.userId === e) {
-                return true;
-            } else return false;
-        }); 
-        this.setState({borrowedBooks: borrowed})
-        let notborrowed = this.state.books.filter((item) => {
-            if( item.userId === '') {
-                return true;
-            } else return false;
-        }); 
+    filterBooks = () => {
+        const notborrowed = this.state.allBooks.filter((el) => {
+            return !this.state.borrowedBooks.some((f) => {
+              return f.bookId === el.id;
+            });
+          });
         this.setState({restBooks: notborrowed})
+
+
     };
 
-    handleClickSetSelected = selected => {
-        this.setState({showModal: true})
-        this.setState({selectedFeature: selected}) 
+    handleClickSetSelected = (selected) => {
+        console.log(selected)
+       
+     //  this.setState({showModal: true})
+       // this.setState({selectedFeature: selected}) 
     };
 
     handleClickHideModal = () => {
@@ -74,17 +93,18 @@ export default class Interface extends React.Component {
         let userID = this.state.selectedFeature['userId'];
         let data = this.state.selectedFeature;
         data['userId'] = '';
+
         updateBook(data['id'], data)
             .then(() => {
                 this.showMessageAlert('success', 'Uspješno ste vratili knjigu');
-                this.getData(userID);
+              //  this.getData(userID);
                 this.handleClickHideModal();
             })
             .catch(() => {
                 this.showMessageAlert('warning', 'Nešto je pošlo po krivu. Pokušajte ponovno');
                 this.handleClickHideModal();
             });
-    }
+    };
 
     borrowBook = () => {
         let data = this.state.selectedFeature;
@@ -118,14 +138,26 @@ export default class Interface extends React.Component {
                         </Button>
                     </div>
                 </Alert> 
+
                 <Find onSubmit={this.handleSubmit}/>
+
                 {!this.state.show ?  
                     <div></div>  : 
                     ( <div className="userinterface"> 
                         {this.state.borrowedBooks.length > 0 ? 
                         <div className="userinterface-div-content" >
                             <p className="userinterface-message-p">Za vratiti</p>
-                            <Container data = {this.state.borrowedBooks} onClickSetSelected = {this.handleClickSetSelected} iconButton={<BsFillDashCircleFill/>}/>
+                            {this.state.searchedUser.map((user, i) => (
+                            <div>
+                                <p>{user.userName}</p>
+                                <Container id={user.id} onClickSetSelected = {this.handleClickSetSelected} iconButton={<BsFillPlusCircleFill/>} data={this.state.allBooks.filter(book => {                  
+                                     return this.state.borrowedBooks.some(borrowedBook => {
+                                        if (borrowedBook.userId ===user.id && book.id === borrowedBook.bookId) {
+                                            return book.userId = borrowedBook.userId;
+                                        }})
+                                     
+                                     })}/>
+                            </div>))}
                         </div>
                          : 
                          <div className="userinterface-div-content">
@@ -145,6 +177,7 @@ export default class Interface extends React.Component {
                         }
                     </div>)
                 }
+
                 <ModalComponent 
                     modalTitle = { this.state.selectedFeature.userId ? 'Vrati knjigu?' : 'Posudi knjigu?'}
                     isShowing = {this.state.showModal}

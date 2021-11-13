@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 export default function Find ( {onSubmit}) {
   const validationSchema = Yup.object().shape({
-    user_name: Yup.string().required('Ime i prezime korisnika je obavezan unos'),
+    userName: Yup.string().required('Ime i prezime korisnika je obavezan unos'),
   });
 
   const {
@@ -22,8 +22,8 @@ export default function Find ( {onSubmit}) {
     <Form onSubmit={handleSubmit(onSubmit)} className="find-users-books">
       <Form.Group className="mb-3">
         <Form.Label>Pretraži korisnika</Form.Label>
-        <Form.Control type="text" placeholder="Pretraži korisnika" {...register('user_name')} className={`form-control ${errors.user_name ? 'is-invalid' : ''}`}/>
-        <div className="invalid-feedback">{errors.user_name?.message}</div>
+        <Form.Control type="text" placeholder="Pretraži korisnika" {...register('userName')} className={`form-control ${errors.userName ? 'is-invalid' : ''}`}/>
+        <div className="invalid-feedback">{errors.userName?.message}</div>
       </Form.Group>
       <Button variant="primary" type="submit" className="button-custom">Pretraži</Button>
     </Form>

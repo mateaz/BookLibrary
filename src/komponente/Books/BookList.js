@@ -18,9 +18,8 @@ export default class BookList extends React.Component {
         showModal: false,
         selectedFeature: {
             id: '',
-            book_name: '',
-            author_firstname:'',
-            author_lastname: '',
+            bookName: '',
+            authorName:'',
             userId: '',
         },
         showAlert: false,
@@ -82,7 +81,7 @@ export default class BookList extends React.Component {
     openModalAdd = () => {
         const nextValueId = Math.max(...this.state.alldata.map(o => o.id), 0)+1;
         this.setState({nextId: nextValueId})
-        this.handleClickSetSelected({id: nextValueId, book_name: '', author_firstname: '', author_lastname: '', userId: '',});
+        this.handleClickSetSelected({id: nextValueId, bookName: '', authorName: '', userId: '',});
         this.setState({setModalTitle: 'Dodaj novu knjigu'});
     };
 

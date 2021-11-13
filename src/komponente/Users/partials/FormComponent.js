@@ -13,16 +13,16 @@ export default function FormComponent ({attributes, submitData }) {
 
   const validationSchema = Yup.object().shape({
     id: Yup.number().typeError('Unos mora biti broj').positive('Broj mora  biti pozitivan').integer('Broj mora biti cijeli broj'),
-    user_name: Yup.string().required('Ime i prezime korisnika je obavezan unos'),
+    userName: Yup.string().required('Ime i prezime korisnika je obavezan unos'),
     //user_lastname: Yup.string().required('Prezime korisnika je obavezan unos'),
-    date_of_birth: Yup.date().required('Date of Birth is required')
+    dateOfBirth: Yup.date().required('Date of Birth is required')
   });
 
   useEffect(() => {
-    if (attributes.date_of_birth) {
-      let dd = attributes.date_of_birth.substring(8, 10);
-      let mm =  attributes.date_of_birth.substring(5, 7);
-      let yyyy =  attributes.date_of_birth.substring(0, 4);
+    if (attributes.dateOfBirth) {
+      let dd = attributes.dateOfBirth.substring(8, 10);
+      let mm =  attributes.dateOfBirth.substring(5, 7);
+      let yyyy =  attributes.dateOfBirth.substring(0, 4);
       setStartDate(`${yyyy}-${mm}-${dd}`);
     } else {
       setStartDate('');
@@ -39,10 +39,10 @@ export default function FormComponent ({attributes, submitData }) {
   });
 
   const onSubmit = data => {
-    let dateBirth = data.date_of_birth;
+    let dateBirth = data.dateOfBirth;
     let dateString = moment(dateBirth).format('YYYY-MM-DD');
-    data.date_of_birth = dateString;
-    if (!initData.user_name) {
+    data.dateOfBirth = dateString;
+    if (!initData.userName) {
       submitData(data, 'add');
     } else submitData(data, 'edit');
   };
@@ -55,8 +55,8 @@ export default function FormComponent ({attributes, submitData }) {
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Ime i prezime korisnika</Form.Label>
-        <Form.Control type="text" placeholder="Ime i prezime korisnika" {...register('user_name')} defaultValue={attributes.user_name}  className={`form-control ${errors.user_name ? 'is-invalid' : ''}`}/>
-        <div className="invalid-feedback">{errors.user_name?.message}</div>
+        <Form.Control type="text" placeholder="Ime i prezime korisnika" {...register('userName')} defaultValue={attributes.userName}  className={`form-control ${errors.userName ? 'is-invalid' : ''}`}/>
+        <div className="invalid-feedback">{errors.userName?.message}</div>
       </Form.Group>
       {/*<Form.Group className="mb-3">
         <Form.Label>Prezime korisnika</Form.Label>
@@ -66,8 +66,8 @@ export default function FormComponent ({attributes, submitData }) {
      
       <Form.Group className="mb-3">
         <Form.Label>Datum rođenja</Form.Label>
-        <Form.Control {...register('date_of_birth')} type="date" defaultValue={startDate} onChange={(e) => setStartDate(e.target.value)} className={`form-control ${errors.date_of_birth ? 'is-invalid' : ''}`}/>
-        <div className="invalid-feedback">{errors.date_of_birth?.message}</div>
+        <Form.Control {...register('dateOfBirth')} type="date" defaultValue={startDate} onChange={(e) => setStartDate(e.target.value)} className={`form-control ${errors.dateOfBirth ? 'is-invalid' : ''}`}/>
+        <div className="invalid-feedback">{errors.dateOfBirth?.message}</div>
       </Form.Group>
       <Button variant="primary" type="submit" className='button-custom'>
         U redu

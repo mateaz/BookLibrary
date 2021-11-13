@@ -10,9 +10,8 @@ export default function FormComponent ( {attributes, submitData }) {
 
   const validationSchema = Yup.object().shape({
     id: Yup.number().typeError('Unos mora biti broj').positive('Broj mora  biti pozitivan').integer('Broj mora biti cijeli broj'),
-    book_name: Yup.string().required('Naziv knjige je obavezan unos'),
-    author_firstname: Yup.string().required('Ime autora je obavezan unos'),
-    author_lastname: Yup.string().required('Prezime autora je obavezan unos')
+    bookName: Yup.string().required('Naziv knjige je obavezan unos'),
+    authorName: Yup.string().required('Ime i preziem autora je obavezan unos'),
   });
 
   useEffect(() => {
@@ -29,7 +28,7 @@ export default function FormComponent ( {attributes, submitData }) {
 
   const onSubmit = data => {
     data.userId = initData.userId;
-    if (!initData.book_name) {
+    if (!initData.bookName) {
       submitData(data, 'add');
     } else submitData(data, 'edit')
   };
@@ -42,18 +41,13 @@ export default function FormComponent ( {attributes, submitData }) {
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Naziv knjige</Form.Label>
-        <Form.Control type="text" placeholder="Naziv knjige" {...register('book_name')} id="book_name-feature" defaultValue={attributes.book_name}  className={`form-control ${errors.book_name ? 'is-invalid' : ''}`}/>
-        <div className="invalid-feedback">{errors.book_name?.message}</div>
+        <Form.Control type="text" placeholder="Naziv knjige" {...register('bookName')} id="bookName-feature" defaultValue={attributes.bookName}  className={`form-control ${errors.bookName ? 'is-invalid' : ''}`}/>
+        <div className="invalid-feedback">{errors.bookName?.message}</div>
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Ime autora</Form.Label>
-        <Form.Control type="text" placeholder="Ime autora" {...register('author_firstname')} id="author_firstname-feature" defaultValue={attributes.author_firstname}  className={`form-control ${errors.author_firstname ? 'is-invalid' : ''}`}/>
-        <div className="invalid-feedback">{errors.author_firstname?.message}</div>
-      </Form.Group>
-      <Form.Group className="mb-3">
-        <Form.Label>Prezime autora</Form.Label>
-        <Form.Control type="text" placeholder="Prezime autora" {...register('author_lastname')} id="author_lastname-feature" defaultValue={attributes.author_lastname}  className={`form-control ${errors.author_lastname ? 'is-invalid' : ''}`}/>
-        <div className="invalid-feedback">{errors.author_lastname?.message}</div>
+        <Form.Control type="text" placeholder="Ime autora" {...register('authorName')} id="authorName-feature" defaultValue={attributes.authorName}  className={`form-control ${errors.authorName ? 'is-invalid' : ''}`}/>
+        <div className="invalid-feedback">{errors.authorName?.message}</div>
       </Form.Group>
       <Button type="submit" className='button-custom'>
         U redu

@@ -7,13 +7,13 @@ export default function Container({userList, onClickSetSelected}) {
   return (
     <div className="list-books">
         {userList.map(user => {
-            const { id, date_of_birth, user_name} = user;
+            const { id, dateOfBirth, userName} = user;
             return (
                 <div key={id} className="book-card">
                     <div className="user-icon"></div>
                     <div className="user-info">
-                      <p className="name">{user_name}</p>  
-                      <p className="date-birth">{date_of_birth}</p>
+                      <p className="name">{userName}</p>  
+                      <p className="date-birth">{dateOfBirth}</p>
                       <Button onClick = {()=> onClickSetSelected(user)}><FiEdit/></Button>
                     </div>
                 </div>

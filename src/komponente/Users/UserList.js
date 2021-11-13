@@ -11,8 +11,8 @@ export default class UserList extends React.Component {
         showModal: false,
         selectedFeature: {
             id: '',
-            user_name: '',
-            date_of_birth:'',
+            userName: '',
+            dateOfBirth:'',
         },
         showAlert: false,
         variant: '',
@@ -72,7 +72,7 @@ export default class UserList extends React.Component {
     handleClickOpenModalAdd = () => {
         const nextValueId = Math.max(...this.state.users.map(o => o.id), 0)+1;
         this.setState({nextId: nextValueId})
-        this.handleClickSetSelected({id: nextValueId, userName: '', date_of_birth: ''});
+        this.handleClickSetSelected({id: nextValueId, userName: '', dateOfBirth: ''});
         this.setState({setModalTitle: 'Dodaj novog korisnika'});
     };
 

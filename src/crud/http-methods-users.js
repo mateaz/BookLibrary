@@ -19,9 +19,9 @@ export const createUser = (data) => {
     return http.post("/users", data);
 };
 
-export const getBorrowedBooks = (id) => {
+/*export const getBorrowedBooks = (id) => {
     return http.get(`/users/${id}/books`);
-};
+};*/
 
 //http://localhost:4000/subjects?name=social%20studies
 
@@ -29,3 +29,5 @@ export const getBorrowedBooks = (id) => {
 //http://localhost:8000/users?q=Ivan%20Ivani%C4%87*/
 
 //http://localhost:8000/borrowState?_expand=book
+
+//http://localhost:8000/borrowState?_expand=book&_expand=user&userId=1

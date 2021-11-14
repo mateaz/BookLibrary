@@ -8,12 +8,12 @@ import {Container, FormComponent, ModalComponent} from './partials';
 export default class BookList extends React.Component {
     state = {
         books: [],
-        active: 'all-books',
-        alldata: [],
-        nextId: '',
+        activeButton: 'all-books',
+        backupBooks: [],
+        nextBookId: '',
         filter: false,
         showModal: false,
-        selectedFeature: {
+        selectedBook: {
             id: '',
             bookName: '',
             authorName:''
@@ -22,18 +22,17 @@ export default class BookList extends React.Component {
         variant: '',
         messageVariant: '',
         setModalTitle: '',
-        borrowedBooks: '',
     };
 
      componentDidMount () {
         getAllBooksWithBorrowState().then(res => {
             this.setState({books: res.data}); 
-            this.setState({alldata: res.data})
+            this.setState({backupBooks: res.data})
         });        
     };
 
-    editData = data => {
-        data['id'] = this.state.selectedFeature['id'];
+    editBook = data => {
+        data['id'] = this.state.selectedBook['id'];
         updateBook(data['id'], data)
             .then(() => {
                 this.updateData();
@@ -42,8 +41,8 @@ export default class BookList extends React.Component {
             .catch((error) => console.log(error));
     };
 
-    addData = data => {
-        data['id'] = this.state.nextId;
+    addNewBook = data => {
+        data['id'] = this.state.nextBookId;
         createBook(data)
             .then(() => {
                 this.showMessageAlert('success', 'Uspješno ste dodali novu knjigu!')
@@ -55,15 +54,15 @@ export default class BookList extends React.Component {
 
     updateData = () => {
         if (this.state.filter) {
-            getAllBooksWithBorrowState().then(res => {this.setState({alldata: res.data})});
-        } else getAllBooksWithBorrowState().then(res => {this.setState({books: res.data}); this.setState({alldata: res.data})});  
+            getAllBooksWithBorrowState().then(res => {this.setState({backupBooks: res.data})});
+        } else getAllBooksWithBorrowState().then(res => {this.setState({books: res.data}); this.setState({backupBooks: res.data})});  
     };
 
     handleClickSetSelected = (selected) => {
         this.setState({showModal: !this.state.showModal});
         this.setState({setModalTitle: 'Izmijeni podatke o knjizi'});
-        if (selected !== this.state.selectedFeature) {
-            this.setState({selectedFeature: selected})
+        if (selected !== this.state.selectedBook) {
+            this.setState({selectedBook: selected})
          };
     };
 
@@ -71,15 +70,15 @@ export default class BookList extends React.Component {
         this.setState({showModal: false})
     };
 
-    saveSubmitedData = (submitedData, b) => {
+    onSubmitedBookData = (submitedData, b) => {
         if (b === 'edit') {
-            this.editData(submitedData);
-        } else this.addData(submitedData);
+            this.editBook(submitedData);
+        } else this.addNewBook(submitedData);
     };
 
     openModalAdd = () => {
-        const nextValueId = Math.max(...this.state.alldata.map(o => o.id), 0)+1;
-        this.setState({nextId: nextValueId})
+        const nextValueId = Math.max(...this.state.backupBooks.map(o => o.id), 0)+1;
+        this.setState({nextBookId: nextValueId})
         this.handleClickSetSelected({id: nextValueId, bookName: '', authorName: ''});
         this.setState({setModalTitle: 'Dodaj novu knjigu'});
     };
@@ -87,7 +86,7 @@ export default class BookList extends React.Component {
     filterData = (e) => {
 
         if (e.target.getAttribute('id').includes('filter')) {
-            let array = this.state.alldata.filter((item) => {
+            let array = this.state.backupBooks.filter((item) => {
                 if(item.borrowState.length > 0) {
                     return true
                 } else return false;
@@ -95,10 +94,10 @@ export default class BookList extends React.Component {
             this.setState({books: array});
             this.setState({filter: true})
         } else {
-            this.setState({books: this.state.alldata});
+            this.setState({books: this.state.backupBooks});
             this.setState({filter: false})
         };
-        this.setState({active: e.target.getAttribute('id')})
+        this.setState({activeButton: e.target.getAttribute('id')})
 
     };
 
@@ -122,8 +121,8 @@ export default class BookList extends React.Component {
                 <div className="buttons-list">
                     <Button className='button-custom' onClick={this.openModalAdd}>Dodaj novu knjigu <BsFillPlusSquareFill /></Button>
                     <div>
-                        <Button className={`button-custom ${this.state.active === 'all-books' ? 'button-active' : ''}`} id="all-books" onClick={(e)=> this.filterData(e)}>Sve knjige</Button>
-                        <Button className={`button-custom  ${this.state.active === 'filter-books' ? 'button-active' : ''}`}  id="filter-books" onClick={(e)=> this.filterData(e)}>Posuđene knjige</Button>
+                        <Button className={`button-custom ${this.state.activeButton === 'all-books' ? 'button-active' : ''}`} id="all-books" onClick={(e)=> this.filterData(e)}>Sve knjige</Button>
+                        <Button className={`button-custom  ${this.state.activeButton === 'filter-books' ? 'button-active' : ''}`}  id="filter-books" onClick={(e)=> this.filterData(e)}>Posuđene knjige</Button>
                     </div>
                 </div>
                 <Container iconElement={<FiEdit />} books = {this.state.books} onClickSetSelected = {this.handleClickSetSelected}/>
@@ -133,8 +132,8 @@ export default class BookList extends React.Component {
                     onClickHide={this.handleClickHideModal}
                     children = {
                         <FormComponent
-                            book = {this.state.selectedFeature}
-                            onSubmitBookData = {this.saveSubmitedData}
+                            book = {this.state.selectedBook}
+                            onSubmitBookData = {this.onSubmitedBookData}
                         />
                     }
                 />

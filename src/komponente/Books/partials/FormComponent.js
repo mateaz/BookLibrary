@@ -5,8 +5,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 
-export default function FormComponent ( {attributes, submitData }) {
-  const [initData, setData] = useState();
+export default function FormComponent (props) {
+  const [initBookData, setBookData] = useState();
 
   const validationSchema = Yup.object().shape({
     id: Yup.number().typeError('Unos mora biti broj').positive('Broj mora  biti pozitivan').integer('Broj mora biti cijeli broj'),
@@ -14,39 +14,31 @@ export default function FormComponent ( {attributes, submitData }) {
     authorName: Yup.string().required('Ime i preziem autora je obavezan unos'),
   });
 
-  useEffect(() => {
-   setData(attributes);
-  }, [attributes]);
+  useEffect(() => {setBookData(props.book);}, [props.book]);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm({
-    resolver: yupResolver(validationSchema)
-  });
+  const {register,handleSubmit,formState: { errors }} = useForm({resolver: yupResolver(validationSchema) });
 
   const onSubmit = data => {
-    data.userId = initData.userId;
-    if (!initData.bookName) {
-      submitData(data, 'add');
-    } else submitData(data, 'edit')
+    data.userId = initBookData.userId;
+    if (!initBookData.bookName) {
+      props.onSubmitBookData(data, 'add');
+    } else  props.onSubmitBookData(data, 'edit')
   };
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Form.Group className="mb-3">
         <Form.Label>Id knjige</Form.Label>
-        <Form.Control type="text" disabled={!!attributes.id} placeholder="Id zapisa" {...register('id')} id="id-feature" defaultValue={attributes.id}  className={`form-control ${errors.id ? 'is-invalid' : ''}`}/>
+        <Form.Control type="text" disabled={!!props.book.id} placeholder="Id zapisa" {...register('id')} id="id-feature" defaultValue={props.book.id}  className={`form-control ${errors.id ? 'is-invalid' : ''}`}/>
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Naziv knjige</Form.Label>
-        <Form.Control type="text" placeholder="Naziv knjige" {...register('bookName')} id="bookName-feature" defaultValue={attributes.bookName}  className={`form-control ${errors.bookName ? 'is-invalid' : ''}`}/>
+        <Form.Control type="text" placeholder="Naziv knjige" {...register('bookName')} id="bookName-feature" defaultValue={props.book.bookName}  className={`form-control ${errors.bookName ? 'is-invalid' : ''}`}/>
         <div className="invalid-feedback">{errors.bookName?.message}</div>
       </Form.Group>
       <Form.Group className="mb-3">
         <Form.Label>Ime autora</Form.Label>
-        <Form.Control type="text" placeholder="Ime autora" {...register('authorName')} id="authorName-feature" defaultValue={attributes.authorName}  className={`form-control ${errors.authorName ? 'is-invalid' : ''}`}/>
+        <Form.Control type="text" placeholder="Ime autora" {...register('authorName')} id="authorName-feature" defaultValue={props.book.authorName}  className={`form-control ${errors.authorName ? 'is-invalid' : ''}`}/>
         <div className="invalid-feedback">{errors.authorName?.message}</div>
       </Form.Group>
       <Button type="submit" className='button-custom'>
@@ -57,6 +49,6 @@ export default function FormComponent ( {attributes, submitData }) {
 };
 
 FormComponent.propTypes={
-  attributes: PropTypes.object, 
-  submitData: PropTypes.func,
+  book: PropTypes.object, 
+  onSubmitBookData: PropTypes.func,
 };

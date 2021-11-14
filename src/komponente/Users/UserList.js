@@ -3,6 +3,7 @@ import {updateUser, getAllUsers, createUser} from "../../crud/http-methods-users
 import {Button, Alert} from 'react-bootstrap';
 import {Container, FormComponent, ModalComponent} from './partials';
 import {BsFillPersonPlusFill} from 'react-icons/bs';
+import {FiEdit} from 'react-icons/fi';
 
 export default class UserList extends React.Component {
     state = {
@@ -51,7 +52,7 @@ export default class UserList extends React.Component {
     };
 
     handleClickSetSelected = (selected) => {
-        console.log(selected)
+      //  console.log(selected)
         this.setState({showModal: !this.state.showModal})
         this.setState({setModalTitle: 'Izmijeni podatke o korisniku'});
         if (selected !== this.state.selectedFeature) {
@@ -94,10 +95,7 @@ export default class UserList extends React.Component {
                 <div className="buttons-list">
                     <Button variant="outlined" color="primary" className='button-custom' onClick={this.handleClickOpenModalAdd}>Dodaj novog korisnika <BsFillPersonPlusFill/></Button>
                 </div>
-                <Container 
-                    userList = {this.state.users}
-                    onClickSetSelected = {this.handleClickSetSelected}
-                />
+                <Container userList = {this.state.users}onClickSetSelected = {this.handleClickSetSelected} iconElement = {<FiEdit/>}/>
                 <ModalComponent 
                     modalTitle = {this.state.setModalTitle}
                     isShowing={this.state.showModal}

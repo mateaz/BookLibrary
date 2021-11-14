@@ -1,16 +1,13 @@
 import React from 'react';
-import {updateBook, getAllBooks, createBook} from "../../crud/http-methods-books";
-import {getAllUsers} from "../../crud/http-methods-users";
+import {updateBook, createBook, getAllBooksWithBorrowState} from "../../crud/http-methods-books";
 import {BsFillPlusSquareFill} from 'react-icons/bs'
 import {Button, Alert} from 'react-bootstrap';
-
+import {FiEdit} from 'react-icons/fi';
 import {Container, FormComponent, ModalComponent} from './partials';
-//import {ModalComponent} from '../ModalComponent';
 
 export default class BookList extends React.Component {
     state = {
         books: [],
-        users: [],
         active: 'all-books',
         alldata: [],
         nextId: '',
@@ -19,18 +16,20 @@ export default class BookList extends React.Component {
         selectedFeature: {
             id: '',
             bookName: '',
-            authorName:'',
-            userId: '',
+            authorName:''
         },
         showAlert: false,
         variant: '',
         messageVariant: '',
         setModalTitle: '',
+        borrowedBooks: '',
     };
 
      componentDidMount () {
-        getAllBooks().then(res => {this.setState({books: res.data}); this.setState({alldata: res.data})});
-        getAllUsers().then(res => this.setState({users: res.data}));
+        getAllBooksWithBorrowState().then(res => {
+            this.setState({books: res.data}); 
+            this.setState({alldata: res.data})
+        });        
     };
 
     editData = data => {
@@ -43,7 +42,7 @@ export default class BookList extends React.Component {
             .catch((error) => console.log(error));
     };
 
-    addData = (data) => {
+    addData = data => {
         data['id'] = this.state.nextId;
         createBook(data)
             .then(() => {
@@ -56,8 +55,8 @@ export default class BookList extends React.Component {
 
     updateData = () => {
         if (this.state.filter) {
-            getAllBooks().then(res => {this.setState({alldata: res.data})});
-        } else getAllBooks().then(res => {this.setState({books: res.data}); this.setState({alldata: res.data})});  
+            getAllBooksWithBorrowState().then(res => {this.setState({alldata: res.data})});
+        } else getAllBooksWithBorrowState().then(res => {this.setState({books: res.data}); this.setState({alldata: res.data})});  
     };
 
     handleClickSetSelected = (selected) => {
@@ -81,14 +80,15 @@ export default class BookList extends React.Component {
     openModalAdd = () => {
         const nextValueId = Math.max(...this.state.alldata.map(o => o.id), 0)+1;
         this.setState({nextId: nextValueId})
-        this.handleClickSetSelected({id: nextValueId, bookName: '', authorName: '', userId: '',});
+        this.handleClickSetSelected({id: nextValueId, bookName: '', authorName: ''});
         this.setState({setModalTitle: 'Dodaj novu knjigu'});
     };
 
     filterData = (e) => {
+
         if (e.target.getAttribute('id').includes('filter')) {
             let array = this.state.alldata.filter((item) => {
-                if( item.userId !== '') {
+                if(item.borrowState.length > 0) {
                     return true
                 } else return false;
             });
@@ -99,6 +99,7 @@ export default class BookList extends React.Component {
             this.setState({filter: false})
         };
         this.setState({active: e.target.getAttribute('id')})
+
     };
 
     showMessageAlert = (variant, message) => {
@@ -125,16 +126,15 @@ export default class BookList extends React.Component {
                         <Button className={`button-custom  ${this.state.active === 'filter-books' ? 'button-active' : ''}`}  id="filter-books" onClick={(e)=> this.filterData(e)}>Posuđene knjige</Button>
                     </div>
                 </div>
-                <Container data = {this.state.books} onClickSetSelected = {this.handleClickSetSelected} usersData = {this.state.active === 'filter-books' ?  this.state.users : []}
-                />
+                <Container iconElement={<FiEdit />} books = {this.state.books} onClickSetSelected = {this.handleClickSetSelected}/>
                 <ModalComponent 
                     modalTitle={this.state.setModalTitle}
                     isShowing={this.state.showModal}
                     onClickHide={this.handleClickHideModal}
                     children = {
                         <FormComponent
-                            attributes = {this.state.selectedFeature}
-                            submitData = {this.saveSubmitedData}
+                            book = {this.state.selectedFeature}
+                            onSubmitBookData = {this.saveSubmitedData}
                         />
                     }
                 />

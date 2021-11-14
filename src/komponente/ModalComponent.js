@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import PropTypes from 'prop-types';
 
-export default function ModalComponent (props) {
+export default function ModalComponent(props) {
   return (
     <Modal show={props.isShowing} onHide={props.onClickHide}>
         <Modal.Header closeButton>

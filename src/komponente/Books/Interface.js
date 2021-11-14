@@ -1,6 +1,8 @@
 import React from 'react';
 import {getUser} from "../../crud/http-methods-users";
-import {updateBook, getAllBooks, getBorrowedBooks, deleteBorrowedBook} from "../../crud/http-methods-books";
+import {getAllBooks} from "../../crud/http-methods-books";
+import { getAllBorrowedBooks, deleteBorrowedBook, createBorrowedBook} from "../../crud/http-methods-stateofborrow";
+
 import {Alert, Button} from 'react-bootstrap';
 import {BsFillPlusCircleFill, BsFillDashCircleFill} from 'react-icons/bs'
 import {Container, Find, ModalComponent} from './partials';
@@ -9,19 +11,17 @@ export default class Interface extends React.Component {
     state = {
         borrowedBooks: [],
         allBooks: [],
-
-        searchedUser:[],
+        searchedUser: '',
+        searchedUserList: [],
         show: false,
-        
-        restBooks: [],
         showAlert: false,
         variant: '',
         messageVariant: '',
         showModal: false,
         selectedFeature: {
             id: '',
-            bookName: '',
-            authorName:'',
+            userId: '',
+            bookId: '',
         },
     };
 
@@ -34,57 +34,62 @@ export default class Interface extends React.Component {
                 console.log(error);
             });
 
-        /*getBorrowedBooks()
+        getAllBorrowedBooks()
             .then(res => {
                 this.setState({borrowedBooks: res.data}); 
-                //console.log(res.data)
-            this.filterBooks();
             })
             .catch(error => {
                 console.log(error);
-            });*/
+            });
     };
 
     handleSubmit = data => {
+        this.setState({searchedUser: data.userName});
+
         getUser(data.userName)
             .then(res => {
-                this.setState({searchedUser: res.data})
-                console.log(res.data)
-              //  this.filterBooks();
+                this.setState({searchedUserList: res.data})
+
                 this.setState({show: true});
             })
             .catch( () => {
-                this.setState({searchedUser: ''});
+                this.setState({searchedUserList: ''});
                 this.setState({show: false})
             });
     };
 
     getData = () => {
-        getBorrowedBooks()
+        getAllBorrowedBooks()
             .then(res => {
                 this.setState({borrowedBooks: res.data}); 
-                this.filterBooks();
             })
             .catch(error => {
                 console.log(error);
             });
-    };
 
-    filterBooks = () => {
-        const notborrowed = this.state.allBooks.filter((el) => {
-            return !this.state.borrowedBooks.some((f) => {
-              return f.bookId === el.id;
+        getUser(this.state.searchedUser)
+            .then(res => {
+                this.setState({searchedUserList: res.data})
+                this.setState({show: true});
+            })
+            .catch( () => {
+                this.setState({searchedUserList: ''});
+                this.setState({show: false})
             });
-          });
-        this.setState({restBooks: notborrowed})
-
-
     };
 
-    handleClickSetSelected = (selected) => {
+    handleClickSetSelected = (selected, s) => {
        this.setState({showModal: true})
-       this.setState({selectedFeature: selected}) 
-       console.log(selected)
+       let selectedBook = {...this.state.selectedFeature}
+       selectedBook.userId = s;
+       selectedBook.bookId = selected.id;
+     
+       if (this.state.borrowedBooks.find(u=> u.bookId===selected.id && u.userId===s)) {
+           selectedBook.id = this.state.borrowedBooks.find(u=> u.bookId===selected.id && u.userId===s).id;
+       } else selectedBook.id = '';
+
+       this.setState({selectedFeature: selectedBook})
+      
     };
 
     handleClickHideModal = () => {
@@ -92,13 +97,8 @@ export default class Interface extends React.Component {
     };
     
     returnBook = () => {
-        //let userID = this.state.selectedFeature['userId'];
         let data = this.state.selectedFeature;
-      //  data['userId'] = '';
-
-        console.log(data)
-
-        deleteBorrowedBook(data.borrowedBookId)
+        deleteBorrowedBook(data.id)
             .then(() => {
                 this.showMessageAlert('success', 'Uspješno ste vratili knjigu');
                 this.getData();
@@ -108,32 +108,23 @@ export default class Interface extends React.Component {
                 this.showMessageAlert('warning', 'Nešto je pošlo po krivu. Pokušajte ponovno');
                 this.handleClickHideModal();
             });
+    };
 
-       /* updateBook(data['id'], data)
+    borrowBook = () => {
+        let data = this.state.selectedFeature;
+        const nextValueId = Math.max(...this.state.borrowedBooks.map(o => o.id), 0)+1;
+        data['id'] = nextValueId;
+
+        createBorrowedBook(data)
             .then(() => {
-                this.showMessageAlert('success', 'Uspješno ste vratili knjigu');
-              //  this.getData(userID);
+                this.showMessageAlert('success', 'Uspješno ste posudili knjigu');
+                this.getData();
                 this.handleClickHideModal();
             })
             .catch(() => {
                 this.showMessageAlert('warning', 'Nešto je pošlo po krivu. Pokušajte ponovno');
                 this.handleClickHideModal();
-            });*/
-    };
-
-    borrowBook = () => {
-        let data = this.state.selectedFeature;
-        data['userId'] = this.state.searchedUser['id'];    
-        updateBook(data['id'], data)
-        .then(() => {
-            this.showMessageAlert('success', 'Uspješno ste posudili knjigu');
-            this.getData(this.state.searchedUser['id']);
-            this.handleClickHideModal();
-        })
-        .catch(() => {
-            this.showMessageAlert('warning', 'Nešto je pošlo po krivu. Pokušajte ponovno');
-            this.handleClickHideModal();
-        });
+            });
     };
 
     showMessageAlert = (variant, message) => {
@@ -153,70 +144,60 @@ export default class Interface extends React.Component {
                         </Button>
                     </div>
                 </Alert> 
-
                 <Find onSubmit={this.handleSubmit}/>
-
                 {!this.state.show ?  
-                    <div></div>  : 
-                    ( <div className="userinterface"> 
-                        {this.state.searchedUser.length > 0 ? 
-                        <div className="userinterface-div-content" >
-                            <p className="userinterface-message-p">Za vratiti</p>
-                            {this.state.searchedUser.map((user, i) => (
-                               
-                               <div><p>{user.userName}</p>
-                               {user.borrowState.length > 0 ? 
-                               /*user.borrowState.map(s => {
-                                   console.log(s.bookId)
-                                   return <span>{s.bookId}</span>
-                               })*/
-                               <Container id={user.id} onClickSetSelected = {this.handleClickSetSelected} iconButton={<BsFillPlusCircleFill/>} 
-                                data={this.state.allBooks.filter(book => {                  
-                                    return user.borrowState.some(s => {
-                                       if (book.id === s.bookId) {
-                                           return book.userId = user.id;
-                                       } 
-                                   })
-                                    
-                                    })}/>
-                                 : 
-                                <span>nema nista</span> 
-                                }
-
-                               
-                                
-                               
-                               {/*<Container id={user.id} onClickSetSelected = {this.handleClickSetSelected} iconButton={<BsFillPlusCircleFill/>} 
-                                data={this.state.allBooks.filter(book => {                  
-                                     
-                                     
-                                     })}/> */} 
-                          </div> ))}
-                        </div>
+                    null : 
+                    (<div className="userinterface"> 
+                        {this.state.searchedUserList.length > 0 ? 
+                            this.state.searchedUserList.map((user, i) => (
+                               <div key={i} className="jedan-div">
+                                   <p className="userinterface-username">{user.userName}</p>
+                                    {user.borrowState.length > 0 ? 
+                                        user.borrowState.length !== this.state.allBooks.length ? 
+                                            <div className="drugi-div"> 
+                                                <div className="trevi-div">
+                                                    <p className="userinterface-information">Knjige koje je korisnik posudio/la</p>
+                                                    <Container iconElement={<BsFillDashCircleFill/>} numUser={user.id} onClickSetSelected = {this.handleClickSetSelected} books={this.state.allBooks.filter(book => ( user.borrowState.some(s => book.id === s.bookId)))}/>
+                                                </div>
+                                                <div className="trevi-div s">
+                                                    <p className="userinterface-information">Dostupne knjige za posudbu</p>
+                                                    <Container iconElement={<BsFillPlusCircleFill/>} numUser={user.id} onClickSetSelected = {this.handleClickSetSelected} books={this.state.allBooks.filter(book => (!user.borrowState.some(s => book.id === s.bookId)))}/>
+                                                </div>
+                                            </div>
+                                            :   
+                                            <div className="drugi-div"> 
+                                                <div className="trevi-div">
+                                                    <p className="userinterface-information">Knjige koje je korisnik posudio/la</p>
+                                                    <Container iconElement={<BsFillDashCircleFill/>} numUser={user.id} onClickSetSelected = {this.handleClickSetSelected} books={this.state.allBooks.filter(book => (user.borrowState.some(s => book.id === s.bookId)))}/>
+                                                </div>
+                                                <div className="trevi-div">
+                                                    <p className="userinterface-information">Za posudbu nije dostupna nijedna knjiga</p>
+                                                </div>        
+                                            </div>
+                                        : 
+                                        <div className="drugi-div">
+                                            <div className="trevi-div">
+                                                <p className="userinterface-information">Korisnik nije posudio/la knjgu</p>
+                                            </div>
+                                            <div className="trevi-div">
+                                                <p className="userinterface-information">Dostupne knjige za posudbu</p>
+                                                <Container numUser={user.id} iconElement={<BsFillPlusCircleFill/>} onClickSetSelected = {this.handleClickSetSelected} books={this.state.allBooks}/>
+                                            </div>                                            
+                                        </div>
+                                    }
+                                </div> 
+                            ))
                          : 
                          <div className="userinterface-div-content">
-                             <p className="userinterface-message-p">Trenutno niste posudili nijednu knjigu</p>
+                             <p className="userinterface-message-p">Nema rezultata za traženi pojam</p>
                         </div>
                         }
-                        <div className="vertical-line"></div>
-                        {this.state.restBooks.length > 0 ? 
-                        <div className="userinterface-div-content" >
-                        <p className="userinterface-message-p">Za posuditi</p>
-                                <Container data = {this.state.restBooks} onClickSetSelected = {this.handleClickSetSelected} iconButton={<BsFillPlusCircleFill/>}/>
-                                </div>
-                            : 
-                            <div className="userinterface-div-content" >
-                                <p className="userinterface-message-p">Nijedna knjiga nije dostupna za posudbu</p>
-                            </div>
-                        }
-                    </div>)
-                }
-
+                    </div>)}
                 <ModalComponent 
-                    modalTitle = { this.state.selectedFeature.borrowedBookId ? 'Vrati knjigu?' : 'Posudi knjigu?'}
+                    modalTitle = {this.state.selectedFeature.id ? 'Vrati knjigu?' : 'Posudi knjigu?'}
                     isShowing = {this.state.showModal}
                     onClickHide = {this.handleClickHideModal}
-                    children = {this.state.selectedFeature.borrowedBookId ? 
+                    children = {this.state.selectedFeature.id ? 
                         ( <div className='modal-return-borrow'>
                             <div>Za povratak knjige u knjižnicu kliknite Da</div>
                             <div className='modal-return-borrow-buttons'>

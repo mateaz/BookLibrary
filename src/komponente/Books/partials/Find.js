@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 
-export default function Find ( {onSubmit}) {
+export default function Find (props) {
   const validationSchema = Yup.object().shape({
     userName: Yup.string().required('Ime i prezime korisnika je obavezan unos'),
   });
@@ -19,7 +19,7 @@ export default function Find ( {onSubmit}) {
   });
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)} className="find-users-books">
+    <Form onSubmit={handleSubmit(props.onSubmit)} className="find-users-books">
       <Form.Group className="mb-3">
         <Form.Label>Pretraži korisnika</Form.Label>
         <Form.Control type="text" placeholder="Pretraži korisnika" {...register('userName')} className={`form-control ${errors.userName ? 'is-invalid' : ''}`}/>

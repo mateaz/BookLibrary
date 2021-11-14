@@ -46,6 +46,7 @@ export default class Interface extends React.Component {
     };
 
     handleSubmit = data => {
+        
         getUser(data.userName)
             .then(res => {
                 this.setState({searchedUser: res.data})

@@ -8,7 +8,7 @@ export const getAllUsers = () => {
 };
 
 export const getUser = (username) => {
-    return http.get(`/users/?q=${username}`);
+    return http.get(`/users/?q=${username}&_embed=borrowState`);
 };
 /*
 export const getUserByName = (userName) => {

@@ -34,7 +34,7 @@ export default class Interface extends React.Component {
                 console.log(error);
             });
 
-        getBorrowedBooks()
+        /*getBorrowedBooks()
             .then(res => {
                 this.setState({borrowedBooks: res.data}); 
                 //console.log(res.data)
@@ -42,15 +42,15 @@ export default class Interface extends React.Component {
             })
             .catch(error => {
                 console.log(error);
-            });
+            });*/
     };
 
     handleSubmit = data => {
-        
         getUser(data.userName)
             .then(res => {
                 this.setState({searchedUser: res.data})
-                this.filterBooks();
+                console.log(res.data)
+              //  this.filterBooks();
                 this.setState({show: true});
             })
             .catch( () => {
@@ -159,23 +159,39 @@ export default class Interface extends React.Component {
                 {!this.state.show ?  
                     <div></div>  : 
                     ( <div className="userinterface"> 
-                        {this.state.borrowedBooks.length > 0 ? 
+                        {this.state.searchedUser.length > 0 ? 
                         <div className="userinterface-div-content" >
                             <p className="userinterface-message-p">Za vratiti</p>
                             {this.state.searchedUser.map((user, i) => (
-                            <div>
-                                <p>{user.userName}</p>
-
-                                <Container id={user.id} onClickSetSelected = {this.handleClickSetSelected} iconButton={<BsFillPlusCircleFill/>} 
+                               
+                               <div><p>{user.userName}</p>
+                               {user.borrowState.length > 0 ? 
+                               /*user.borrowState.map(s => {
+                                   console.log(s.bookId)
+                                   return <span>{s.bookId}</span>
+                               })*/
+                               <Container id={user.id} onClickSetSelected = {this.handleClickSetSelected} iconButton={<BsFillPlusCircleFill/>} 
                                 data={this.state.allBooks.filter(book => {                  
-                                     return this.state.borrowedBooks.some(borrowedBook => {
-                                        if (borrowedBook.userId === user.id && book.id === borrowedBook.bookId) {
-                                            return book.borrowedBookId = borrowedBook.id;
-                                        } 
-                                    })
+                                    return user.borrowState.some(s => {
+                                       if (book.id === s.bookId) {
+                                           return book.userId = user.id;
+                                       } 
+                                   })
+                                    
+                                    })}/>
+                                 : 
+                                <span>nema nista</span> 
+                                }
+
+                               
+                                
+                               
+                               {/*<Container id={user.id} onClickSetSelected = {this.handleClickSetSelected} iconButton={<BsFillPlusCircleFill/>} 
+                                data={this.state.allBooks.filter(book => {                  
                                      
-                                     })}/>
-                            </div>))}
+                                     
+                                     })}/> */} 
+                          </div> ))}
                         </div>
                          : 
                          <div className="userinterface-div-content">

@@ -74,6 +74,9 @@ html, body {
 
 .splide-background h3 {
   padding-left: 15%;
+  font-size: 33px;
+  opacity: 0.5;
+
 }
 
 #splideOne {
@@ -194,12 +197,11 @@ button:focus {
   font-size: 14px!important;
   font-weight: 600!important;
   border-radius: 0px!important;
-  background: unset!important;
+  background: #861657!important;
   border: 1px solid #861657!important;
   color: white!important;
   position: relative;
   text-decoration: none;
-  line-height: 1;
   position: relative;
   z-index: 0;
   overflow: hidden;
@@ -227,6 +229,7 @@ button:focus {
 .button-custom:hover {
   color: #89043D!important;
   border: 1px solid #89043D!important;
+  background: white!important;
 }
 
 .button-custom.button-active {

@@ -22,7 +22,7 @@ export default function Find (props) {
     <Form onSubmit={handleSubmit(props.onUsernameSubmit)} className="find-users-books">
       <Form.Group className="mb-3">
         <Form.Label>Pretraži korisnika</Form.Label>
-        <Form.Control type="text" placeholder="Pretraži korisnika" {...register('userName')} className={`form-control ${errors.userName ? 'is-invalid' : ''}`}/>
+        <Form.Control  type="text" placeholder="Pretraži korisnika" {...register('userName')} className={`form-control ${errors.userName ? 'is-invalid' : ''}`}/>
         <div className="invalid-feedback">{errors.userName?.message}</div>
       </Form.Group>
       <Button variant="primary" type="submit" className="button-custom">Pretraži</Button>

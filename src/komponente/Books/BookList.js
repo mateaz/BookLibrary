@@ -53,9 +53,8 @@ export default class BookList extends React.Component {
     };
 
     updateData = () => {
-        if (this.state.filter) {
-            getAllBooksWithBorrowState().then(res => {this.setState({backupBooks: res.data})});
-        } else getAllBooksWithBorrowState().then(res => {this.setState({allBooks: res.data}); this.setState({backupBooks: res.data})});  
+        getAllBooksWithBorrowState().then(res => {this.setState({allBooks: res.data}); this.setState({backupBooks: res.data})});  
+        this.setState({activeButton: 'all-books'});
     };
 
     handleSelectedClick = (selected) => {

@@ -29,16 +29,6 @@
       "id": 6,
       "bookName": "Paklena naranča",
       "authorName": "Anthony Burgess"
-    },
-    {
-      "id": 7,
-      "bookName": "kuk",
-      "authorName": "jajaj"
-    },
-    {
-      "id": 8,
-      "bookName": "sfd",
-      "authorName": "sdf"
     }
   ],
   "users": [
@@ -61,21 +51,6 @@
       "id": 4,
       "dateOfBirth": "1994-10-15",
       "userName": "Ante Antić"
-    },
-    {
-      "dateOfBirth": "2021-11-24",
-      "userName": "asdas asdas",
-      "id": 5
-    },
-    {
-      "dateOfBirth": "2021-11-18",
-      "userName": "Nova korisnik",
-      "id": 6
-    },
-    {
-      "dateOfBirth": "2021-07-08",
-      "userName": "Novi krisnik",
-      "id": 7
     }
   ],
   "borrowState": [
@@ -108,6 +83,11 @@
       "id": 23,
       "userId": 3,
       "bookId": 6
+    },
+    {
+      "id": 24,
+      "userId": 4,
+      "bookId": 3
     }
   ]
 }

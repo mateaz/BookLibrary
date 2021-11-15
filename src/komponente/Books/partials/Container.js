@@ -1,21 +1,19 @@
 import React from 'react';
 import {Button} from 'react-bootstrap';
-import {FiEdit} from 'react-icons/fi';
-
 import PropTypes from 'prop-types';
 
-export default function Container({data, onClickSetSelected, usersData}) {
+export default function Container(props) {
   return (
     <div className="list-books">
-        {data.map(feature => {
-            const { id, bookName, authorName } = feature;  
+        {props.books.map(book => {
+            const { id, bookName, authorName } = book;  
             return (
                 <div key={id} className="book-card" >
                   <div className="book-icon"></div>
                   <div className="book-info">
                     <p className="book-name">{bookName}</p>
                     <p className="book-author">{authorName}</p> 
-                    <Button onClick = {()=> onClickSetSelected(feature)}><FiEdit/></Button>
+                    <Button className="button-custom" onClick = {()=> props.onSelectedClick(book, props.numUserId)}>{props.iconElement}</Button>
                     </div>
                 </div>
             )
@@ -23,8 +21,10 @@ export default function Container({data, onClickSetSelected, usersData}) {
     </div>
   );
 };
+
 Container.propTypes={
-  openModalEdit: PropTypes.func,
-  iconButton: PropTypes.object,
-  usersData: PropTypes.array,
+  books: PropTypes.array,
+  onSelectedClick: PropTypes.func,
+  numUserId: PropTypes.number,
+  iconElement: PropTypes.node
 };

@@ -1,26 +1,22 @@
 import React from 'react';
-import {updateBook, getAllBooks, createBook} from "../../crud/http-methods-books";
-import {getAllUsers} from "../../crud/http-methods-users";
+import {updateBook, createBook, getAllBooksWithBorrowState} from "../../crud/http-methods-books";
 import {BsFillPlusSquareFill} from 'react-icons/bs'
 import {Button, Alert} from 'react-bootstrap';
-
+import {FiEdit} from 'react-icons/fi';
 import {Container, FormComponent, ModalComponent} from './partials';
-//import {ModalComponent} from '../ModalComponent';
 
 export default class BookList extends React.Component {
     state = {
-        books: [],
-        users: [],
-        active: 'all-books',
-        alldata: [],
-        nextId: '',
+        allBooks: [],
+        activeButton: 'all-books',
+        backupBooks: [],
+        nextBookId: '',
         filter: false,
         showModal: false,
-        selectedFeature: {
+        selectedBook: {
             id: '',
             bookName: '',
-            authorName:'',
-            userId: '',
+            authorName:''
         },
         showAlert: false,
         variant: '',
@@ -29,76 +25,78 @@ export default class BookList extends React.Component {
     };
 
      componentDidMount () {
-        getAllBooks().then(res => {this.setState({books: res.data}); this.setState({alldata: res.data})});
-        getAllUsers().then(res => this.setState({users: res.data}));
+        getAllBooksWithBorrowState().then(res => {
+            this.setState({allBooks: res.data}); 
+            this.setState({backupBooks: res.data})
+        });        
     };
 
-    editData = data => {
-        data['id'] = this.state.selectedFeature['id'];
+    editBook = data => {
+        data['id'] = this.state.selectedBook['id'];
         updateBook(data['id'], data)
             .then(() => {
                 this.updateData();
-                this.handleClickHideModal();
+                this.handleHideModalClick();
             })
             .catch((error) => console.log(error));
     };
 
-    addData = (data) => {
-        data['id'] = this.state.nextId;
+    addNewBook = data => {
+        data['id'] = this.state.nextBookId;
         createBook(data)
             .then(() => {
                 this.showMessageAlert('success', 'Uspješno ste dodali novu knjigu!')
                 this.updateData();
-                this.handleClickHideModal();
+                this.handleHideModalClick();
             })
             .catch(() =>this.showMessageAlert('warning', 'Nešto je pošlo po krivu. Pokušajte ponovno.'));
     };
 
     updateData = () => {
-        if (this.state.filter) {
-            getAllBooks().then(res => {this.setState({alldata: res.data})});
-        } else getAllBooks().then(res => {this.setState({books: res.data}); this.setState({alldata: res.data})});  
+        getAllBooksWithBorrowState().then(res => {this.setState({allBooks: res.data}); this.setState({backupBooks: res.data})});  
+        this.setState({activeButton: 'all-books'});
     };
 
-    handleClickSetSelected = (selected) => {
+    handleSelectedClick = (selected) => {
         this.setState({showModal: !this.state.showModal});
         this.setState({setModalTitle: 'Izmijeni podatke o knjizi'});
-        if (selected !== this.state.selectedFeature) {
-            this.setState({selectedFeature: selected})
+        if (selected !== this.state.selectedBook) {
+            this.setState({selectedBook: selected})
          };
     };
 
-    handleClickHideModal = () => {
+    handleHideModalClick = () => {
         this.setState({showModal: false})
     };
 
-    saveSubmitedData = (submitedData, b) => {
+    handleBookDataSubmit = (submitedData, b) => {
         if (b === 'edit') {
-            this.editData(submitedData);
-        } else this.addData(submitedData);
+            this.editBook(submitedData);
+        } else this.addNewBook(submitedData);
     };
 
-    openModalAdd = () => {
-        const nextValueId = Math.max(...this.state.alldata.map(o => o.id), 0)+1;
-        this.setState({nextId: nextValueId})
-        this.handleClickSetSelected({id: nextValueId, bookName: '', authorName: '', userId: '',});
+    handleOpenModalClick = () => {
+        const nextValueId = Math.max(...this.state.backupBooks.map(o => o.id), 0)+1;
+        this.setState({nextBookId: nextValueId})
+        this.handleSelectedClick({id: nextValueId, bookName: '', authorName: ''});
         this.setState({setModalTitle: 'Dodaj novu knjigu'});
     };
 
-    filterData = (e) => {
+    handleFilterBooksClick = (e) => {
         if (e.target.getAttribute('id').includes('filter')) {
-            let array = this.state.alldata.filter((item) => {
-                if( item.userId !== '') {
+            let array = this.state.backupBooks.filter((item) => {
+                if(item.borrowState.length > 0) {
                     return true
                 } else return false;
             });
-            this.setState({books: array});
+            this.setState({allBooks: array});
             this.setState({filter: true})
         } else {
-            this.setState({books: this.state.alldata});
+            this.setState({allBooks: this.state.backupBooks});
             this.setState({filter: false})
         };
-        this.setState({active: e.target.getAttribute('id')})
+        this.setState({activeButton: e.target.getAttribute('id')})
+
     };
 
     showMessageAlert = (variant, message) => {
@@ -119,22 +117,21 @@ export default class BookList extends React.Component {
                     </div>
                 </Alert>  
                 <div className="buttons-list">
-                    <Button className='button-custom' onClick={this.openModalAdd}>Dodaj novu knjigu <BsFillPlusSquareFill /></Button>
+                    <Button className='button-custom' onClick = {this.handleOpenModalClick}>Dodaj novu knjigu <BsFillPlusSquareFill /></Button>
                     <div>
-                        <Button className={`button-custom ${this.state.active === 'all-books' ? 'button-active' : ''}`} id="all-books" onClick={(e)=> this.filterData(e)}>Sve knjige</Button>
-                        <Button className={`button-custom  ${this.state.active === 'filter-books' ? 'button-active' : ''}`}  id="filter-books" onClick={(e)=> this.filterData(e)}>Posuđene knjige</Button>
+                        <Button className={`button-custom ${this.state.activeButton === 'all-books' ? 'button-active' : ''}`} id="all-books" onClick = {(e)=> this.handleFilterBooksClick(e)}>Sve knjige</Button>
+                        <Button className={`button-custom  ${this.state.activeButton === 'filter-books' ? 'button-active' : ''}`}  id="filter-books" onClick = {(e)=> this.handleFilterBooksClick(e)}>Posuđene knjige</Button>
                     </div>
                 </div>
-                <Container data = {this.state.books} onClickSetSelected = {this.handleClickSetSelected} usersData = {this.state.active === 'filter-books' ?  this.state.users : []}
-                />
+                <Container iconElement = {<FiEdit />} books = {this.state.allBooks} onSelectedClick = {this.handleSelectedClick}/>
                 <ModalComponent 
-                    modalTitle={this.state.setModalTitle}
-                    isShowing={this.state.showModal}
-                    onClickHide={this.handleClickHideModal}
+                    modalTitle = {this.state.setModalTitle}
+                    isShowing = {this.state.showModal}
+                    onHideModalClick = {this.handleHideModalClick}
                     children = {
                         <FormComponent
-                            attributes = {this.state.selectedFeature}
-                            submitData = {this.saveSubmitedData}
+                            book = {this.state.selectedBook}
+                            onBookDataSubmit = {this.handleBookDataSubmit}
                         />
                     }
                 />

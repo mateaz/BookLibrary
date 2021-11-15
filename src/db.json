@@ -3,8 +3,7 @@
     {
       "id": 1,
       "bookName": "Nož",
-      "authorName": "Jo Nesbo",
-      "borrowedBookId": 1
+      "authorName": "Jo Nesbo"
     },
     {
       "id": 2,
@@ -40,7 +39,7 @@
     },
     {
       "dateOfBirth": "1999-10-20",
-      "userName": "Mato Matic",
+      "userName": "Mato Matić",
       "id": 2
     },
     {
@@ -52,43 +51,43 @@
       "id": 4,
       "dateOfBirth": "1994-10-15",
       "userName": "Ante Antić"
-    },
-    {
-      "dateOfBirth": "2021-11-24",
-      "userName": "asdas asdas",
-      "id": 5
     }
   ],
   "borrowState": [
     {
-      "id": 1,
+      "id": 14,
       "userId": 1,
-      "bookId": 2
+      "bookId": 1
     },
     {
-      "id": 2,
+      "id": 19,
       "userId": 1,
       "bookId": 6
     },
     {
-      "id": 3,
+      "id": 20,
+      "userId": 3,
+      "bookId": 2
+    },
+    {
+      "id": 21,
       "userId": 1,
+      "bookId": 8
+    },
+    {
+      "id": 22,
+      "userId": 1,
+      "bookId": 7
+    },
+    {
+      "id": 23,
+      "userId": 3,
+      "bookId": 6
+    },
+    {
+      "id": 24,
+      "userId": 4,
       "bookId": 3
-    },
-    {
-      "id": 4,
-      "userId": 2,
-      "bookId": 3
-    },
-    {
-      "id": 5,
-      "userId": 2,
-      "bookId": 1
-    },
-    {
-      "id": 6,
-      "userId": 2,
-      "bookId": 5
     }
   ]
 }

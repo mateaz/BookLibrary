@@ -13,12 +13,12 @@ export default class Interface extends React.Component {
         allBooks: [],
         searchedUser: '',
         searchedUserList: [],
-        show: false,
+        showInterface: false,
         showAlert: false,
         variant: '',
         messageVariant: '',
         showModal: false,
-        selectedFeature: {
+        selectedBook: {
             id: '',
             userId: '',
             bookId: '',
@@ -43,18 +43,18 @@ export default class Interface extends React.Component {
             });
     };
 
-    handleSubmit = data => {
+    handleUsernameSubmit = data => {
         this.setState({searchedUser: data.userName});
 
         getUser(data.userName)
             .then(res => {
                 this.setState({searchedUserList: res.data})
 
-                this.setState({show: true});
+                this.setState({showInterface: true});
             })
             .catch( () => {
                 this.setState({searchedUserList: ''});
-                this.setState({show: false})
+                this.setState({showInterface: false})
             });
     };
 
@@ -70,48 +70,48 @@ export default class Interface extends React.Component {
         getUser(this.state.searchedUser)
             .then(res => {
                 this.setState({searchedUserList: res.data})
-                this.setState({show: true});
+                this.setState({shoshowInterfacew: true});
             })
             .catch( () => {
                 this.setState({searchedUserList: ''});
-                this.setState({show: false})
+                this.setState({showInterface: false})
             });
     };
 
-    handleClickSetSelected = (selected, s) => {
+    handleSelectedClick = (selected, userId) => {
        this.setState({showModal: true})
-       let selectedBook = {...this.state.selectedFeature}
-       selectedBook.userId = s;
+       let selectedBook = {...this.state.selectedBook}
+       selectedBook.userId = userId;
        selectedBook.bookId = selected.id;
      
-       if (this.state.borrowedBooks.find(u=> u.bookId===selected.id && u.userId===s)) {
-           selectedBook.id = this.state.borrowedBooks.find(u=> u.bookId===selected.id && u.userId===s).id;
+       if (this.state.borrowedBooks.find(u=> u.bookId===selected.id && u.userId===userId)) {
+           selectedBook.id = this.state.borrowedBooks.find(u=> u.bookId===selected.id && u.userId===userId).id;
        } else selectedBook.id = '';
 
-       this.setState({selectedFeature: selectedBook})
+       this.setState({selectedBook: selectedBook})
       
     };
 
-    handleClickHideModal = () => {
+    handleHideModalClick = () => {
         this.setState({showModal: false})
     };
     
-    returnBook = () => {
-        let data = this.state.selectedFeature;
+    handleReturnBookClick = () => {
+        let data = this.state.selectedBook;
         deleteBorrowedBook(data.id)
             .then(() => {
                 this.showMessageAlert('success', 'Uspješno ste vratili knjigu');
                 this.getData();
-                this.handleClickHideModal();
+                this.handleHideModalClick();
             })
             .catch(() => {
                 this.showMessageAlert('warning', 'Nešto je pošlo po krivu. Pokušajte ponovno');
-                this.handleClickHideModal();
+                this.handleHideModalClick();
             });
     };
 
-    borrowBook = () => {
-        let data = this.state.selectedFeature;
+    handleBorrowBookClick = () => {
+        let data = this.state.selectedBook;
         const nextValueId = Math.max(...this.state.borrowedBooks.map(o => o.id), 0)+1;
         data['id'] = nextValueId;
 
@@ -119,11 +119,11 @@ export default class Interface extends React.Component {
             .then(() => {
                 this.showMessageAlert('success', 'Uspješno ste posudili knjigu');
                 this.getData();
-                this.handleClickHideModal();
+                this.handleHideModalClick();
             })
             .catch(() => {
                 this.showMessageAlert('warning', 'Nešto je pošlo po krivu. Pokušajte ponovno');
-                this.handleClickHideModal();
+                this.handleHideModalClick();
             });
     };
 
@@ -144,44 +144,44 @@ export default class Interface extends React.Component {
                         </Button>
                     </div>
                 </Alert> 
-                <Find onSubmit={this.handleSubmit}/>
-                {!this.state.show ?  
+                <Find onUsernameSubmit={this.handleUsernameSubmit}/>
+                {!this.state.showInterface ?  
                     null : 
                     (<div className="userinterface"> 
                         {this.state.searchedUserList.length > 0 ? 
                             this.state.searchedUserList.map((user, i) => (
-                               <div key={i} className="jedan-div">
+                               <div key={i} className="userinterface-div-content">
                                    <p className="userinterface-username">{user.userName}</p>
                                     {user.borrowState.length > 0 ? 
                                         user.borrowState.length !== this.state.allBooks.length ? 
-                                            <div className="drugi-div"> 
-                                                <div className="trevi-div">
+                                            <div className="single-user-interface"> 
+                                                <div className="single-book-borrow-state">
                                                     <p className="userinterface-information">Knjige koje je korisnik posudio/la</p>
-                                                    <Container iconElement={<BsFillDashCircleFill/>} numUser={user.id} onClickSetSelected = {this.handleClickSetSelected} books={this.state.allBooks.filter(book => ( user.borrowState.some(s => book.id === s.bookId)))}/>
+                                                    <Container iconElement={<BsFillDashCircleFill/>} numUserId={user.id} onSelectedClick = {this.handleSelectedClick} books={this.state.allBooks.filter(book => ( user.borrowState.some(s => book.id === s.bookId)))}/>
                                                 </div>
-                                                <div className="trevi-div s">
+                                                <div className="single-book-borrow-state s">
                                                     <p className="userinterface-information">Dostupne knjige za posudbu</p>
-                                                    <Container iconElement={<BsFillPlusCircleFill/>} numUser={user.id} onClickSetSelected = {this.handleClickSetSelected} books={this.state.allBooks.filter(book => (!user.borrowState.some(s => book.id === s.bookId)))}/>
+                                                    <Container iconElement={<BsFillPlusCircleFill/>} numUserId={user.id} onSelectedClick = {this.handleSelectedClick} books={this.state.allBooks.filter(book => (!user.borrowState.some(s => book.id === s.bookId)))}/>
                                                 </div>
                                             </div>
                                             :   
-                                            <div className="drugi-div"> 
-                                                <div className="trevi-div">
+                                            <div className="single-user-interface"> 
+                                                <div className="single-book-borrow-state">
                                                     <p className="userinterface-information">Knjige koje je korisnik posudio/la</p>
-                                                    <Container iconElement={<BsFillDashCircleFill/>} numUser={user.id} onClickSetSelected = {this.handleClickSetSelected} books={this.state.allBooks.filter(book => (user.borrowState.some(s => book.id === s.bookId)))}/>
+                                                    <Container iconElement={<BsFillDashCircleFill/>} numUserId={user.id} onSelectedClick = {this.handleSelectedClick} books={this.state.allBooks.filter(book => (user.borrowState.some(s => book.id === s.bookId)))}/>
                                                 </div>
-                                                <div className="trevi-div">
+                                                <div className="single-book-borrow-state">
                                                     <p className="userinterface-information">Za posudbu nije dostupna nijedna knjiga</p>
                                                 </div>        
                                             </div>
                                         : 
-                                        <div className="drugi-div">
-                                            <div className="trevi-div">
+                                        <div className="single-user-interface">
+                                            <div className="single-book-borrow-state">
                                                 <p className="userinterface-information">Korisnik nije posudio/la knjgu</p>
                                             </div>
-                                            <div className="trevi-div">
+                                            <div className="single-book-borrow-state">
                                                 <p className="userinterface-information">Dostupne knjige za posudbu</p>
-                                                <Container numUser={user.id} iconElement={<BsFillPlusCircleFill/>} onClickSetSelected = {this.handleClickSetSelected} books={this.state.allBooks}/>
+                                                <Container numUserId={user.id} iconElement={<BsFillPlusCircleFill/>} onSelectedClick = {this.handleSelectedClick} books={this.state.allBooks}/>
                                             </div>                                            
                                         </div>
                                     }
@@ -194,15 +194,15 @@ export default class Interface extends React.Component {
                         }
                     </div>)}
                 <ModalComponent 
-                    modalTitle = {this.state.selectedFeature.id ? 'Vrati knjigu?' : 'Posudi knjigu?'}
+                    modalTitle = {this.state.selectedBook.id ? 'Vrati knjigu?' : 'Posudi knjigu?'}
                     isShowing = {this.state.showModal}
-                    onClickHide = {this.handleClickHideModal}
-                    children = {this.state.selectedFeature.id ? 
+                    onHideModalClick = {this.handleHideModalClick}
+                    children = {this.state.selectedBook.id ? 
                         ( <div className='modal-return-borrow'>
                             <div>Za povratak knjige u knjižnicu kliknite Da</div>
                             <div className='modal-return-borrow-buttons'>
-                                <Button className='button-custom' onClick={this.returnBook}>Da</Button>
-                                <Button className='button-custom' onClick={this.handleClickHideModal}>Odustani</Button>
+                                <Button className='button-custom' onClick={this.handleReturnBookClick}>Da</Button>
+                                <Button className='button-custom' onClick={this.handleHideModalClick}>Odustani</Button>
                             </div>
                         </div>
                         )
@@ -210,8 +210,8 @@ export default class Interface extends React.Component {
                         ( <div className='modal-return-borrow'>
                             <div>Za posudbu knjige kliknite Da</div>
                             <div className='modal-return-borrow-buttons'>
-                                <Button className='button-custom' onClick={this.borrowBook}>Da</Button>
-                                <Button className='button-custom' onClick={this.handleClickHideModal}>Odustani</Button>
+                                <Button className='button-custom' onClick={this.handleBorrowBookClick}>Da</Button>
+                                <Button className='button-custom' onClick={this.handleHideModalClick}>Odustani</Button>
                             </div>
                         </div>
                         )

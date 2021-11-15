@@ -21,8 +21,8 @@ export default function FormComponent (props) {
   const onSubmit = data => {
     data.userId = initBookData.userId;
     if (!initBookData.bookName) {
-      props.onSubmitBookData(data, 'add');
-    } else  props.onSubmitBookData(data, 'edit')
+      props.onBookDataSubmit(data, 'add');
+    } else  props.onBookDataSubmit(data, 'edit')
   };
 
   return (
@@ -50,5 +50,5 @@ export default function FormComponent (props) {
 
 FormComponent.propTypes={
   book: PropTypes.object, 
-  onSubmitBookData: PropTypes.func,
+  onBookDataSubmit: PropTypes.func,
 };

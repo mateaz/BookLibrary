@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 export default function ModalComponent(props) {
   return (
-    <Modal show={props.isShowing} onHide={props.onClickHide}>
+    <Modal show={props.isShowing} onHide={props.onHideModalClick}>
         <Modal.Header closeButton>
           <Modal.Title>{props.modalTitle}</Modal.Title>
         </Modal.Header>
@@ -18,6 +18,6 @@ export default function ModalComponent(props) {
 ModalComponent.propTypes={
   modalTitle: PropTypes.string,
   isShowing: PropTypes.bool, 
-  onClickHide: PropTypes.func,
-  child: PropTypes.object,
+  onHideModalClick: PropTypes.func,
+  children: PropTypes.object,
 };

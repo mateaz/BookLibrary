@@ -7,7 +7,7 @@ import {Container, FormComponent, ModalComponent} from './partials';
 
 export default class BookList extends React.Component {
     state = {
-        books: [],
+        allBooks: [],
         activeButton: 'all-books',
         backupBooks: [],
         nextBookId: '',
@@ -26,7 +26,7 @@ export default class BookList extends React.Component {
 
      componentDidMount () {
         getAllBooksWithBorrowState().then(res => {
-            this.setState({books: res.data}); 
+            this.setState({allBooks: res.data}); 
             this.setState({backupBooks: res.data})
         });        
     };
@@ -36,7 +36,7 @@ export default class BookList extends React.Component {
         updateBook(data['id'], data)
             .then(() => {
                 this.updateData();
-                this.handleClickHideModal();
+                this.handleHideModalClick();
             })
             .catch((error) => console.log(error));
     };
@@ -47,7 +47,7 @@ export default class BookList extends React.Component {
             .then(() => {
                 this.showMessageAlert('success', 'Uspješno ste dodali novu knjigu!')
                 this.updateData();
-                this.handleClickHideModal();
+                this.handleHideModalClick();
             })
             .catch(() =>this.showMessageAlert('warning', 'Nešto je pošlo po krivu. Pokušajte ponovno.'));
     };
@@ -55,10 +55,10 @@ export default class BookList extends React.Component {
     updateData = () => {
         if (this.state.filter) {
             getAllBooksWithBorrowState().then(res => {this.setState({backupBooks: res.data})});
-        } else getAllBooksWithBorrowState().then(res => {this.setState({books: res.data}); this.setState({backupBooks: res.data})});  
+        } else getAllBooksWithBorrowState().then(res => {this.setState({allBooks: res.data}); this.setState({backupBooks: res.data})});  
     };
 
-    handleClickSetSelected = (selected) => {
+    handleSelectedClick = (selected) => {
         this.setState({showModal: !this.state.showModal});
         this.setState({setModalTitle: 'Izmijeni podatke o knjizi'});
         if (selected !== this.state.selectedBook) {
@@ -66,35 +66,34 @@ export default class BookList extends React.Component {
          };
     };
 
-    handleClickHideModal = () => {
+    handleHideModalClick = () => {
         this.setState({showModal: false})
     };
 
-    onSubmitedBookData = (submitedData, b) => {
+    handleBookDataSubmit = (submitedData, b) => {
         if (b === 'edit') {
             this.editBook(submitedData);
         } else this.addNewBook(submitedData);
     };
 
-    openModalAdd = () => {
+    handleOpenModalClick = () => {
         const nextValueId = Math.max(...this.state.backupBooks.map(o => o.id), 0)+1;
         this.setState({nextBookId: nextValueId})
-        this.handleClickSetSelected({id: nextValueId, bookName: '', authorName: ''});
+        this.handleSelectedClick({id: nextValueId, bookName: '', authorName: ''});
         this.setState({setModalTitle: 'Dodaj novu knjigu'});
     };
 
-    filterData = (e) => {
-
+    handleFilterBooksClick = (e) => {
         if (e.target.getAttribute('id').includes('filter')) {
             let array = this.state.backupBooks.filter((item) => {
                 if(item.borrowState.length > 0) {
                     return true
                 } else return false;
             });
-            this.setState({books: array});
+            this.setState({allBooks: array});
             this.setState({filter: true})
         } else {
-            this.setState({books: this.state.backupBooks});
+            this.setState({allBooks: this.state.backupBooks});
             this.setState({filter: false})
         };
         this.setState({activeButton: e.target.getAttribute('id')})
@@ -119,21 +118,21 @@ export default class BookList extends React.Component {
                     </div>
                 </Alert>  
                 <div className="buttons-list">
-                    <Button className='button-custom' onClick={this.openModalAdd}>Dodaj novu knjigu <BsFillPlusSquareFill /></Button>
+                    <Button className='button-custom' onClick = {this.handleOpenModalClick}>Dodaj novu knjigu <BsFillPlusSquareFill /></Button>
                     <div>
-                        <Button className={`button-custom ${this.state.activeButton === 'all-books' ? 'button-active' : ''}`} id="all-books" onClick={(e)=> this.filterData(e)}>Sve knjige</Button>
-                        <Button className={`button-custom  ${this.state.activeButton === 'filter-books' ? 'button-active' : ''}`}  id="filter-books" onClick={(e)=> this.filterData(e)}>Posuđene knjige</Button>
+                        <Button className={`button-custom ${this.state.activeButton === 'all-books' ? 'button-active' : ''}`} id="all-books" onClick = {(e)=> this.handleFilterBooksClick(e)}>Sve knjige</Button>
+                        <Button className={`button-custom  ${this.state.activeButton === 'filter-books' ? 'button-active' : ''}`}  id="filter-books" onClick = {(e)=> this.handleFilterBooksClick(e)}>Posuđene knjige</Button>
                     </div>
                 </div>
-                <Container iconElement={<FiEdit />} books = {this.state.books} onClickSetSelected = {this.handleClickSetSelected}/>
+                <Container iconElement = {<FiEdit />} books = {this.state.allBooks} onSelectedClick = {this.handleSelectedClick}/>
                 <ModalComponent 
-                    modalTitle={this.state.setModalTitle}
-                    isShowing={this.state.showModal}
-                    onClickHide={this.handleClickHideModal}
+                    modalTitle = {this.state.setModalTitle}
+                    isShowing = {this.state.showModal}
+                    onHideModalClick = {this.handleHideModalClick}
                     children = {
                         <FormComponent
                             book = {this.state.selectedBook}
-                            onSubmitBookData = {this.onSubmitedBookData}
+                            onBookDataSubmit = {this.handleBookDataSubmit}
                         />
                     }
                 />

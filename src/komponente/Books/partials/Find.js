@@ -19,7 +19,7 @@ export default function Find (props) {
   });
 
   return (
-    <Form onSubmit={handleSubmit(props.onSubmit)} className="find-users-books">
+    <Form onSubmit={handleSubmit(props.onUsernameSubmit)} className="find-users-books">
       <Form.Group className="mb-3">
         <Form.Label>Pretraži korisnika</Form.Label>
         <Form.Control type="text" placeholder="Pretraži korisnika" {...register('userName')} className={`form-control ${errors.userName ? 'is-invalid' : ''}`}/>
@@ -31,6 +31,6 @@ export default function Find (props) {
 };
 
 Find.propTypes={
-  onSubmit: PropTypes.func,
+  onUsernameSubmit: PropTypes.func,
 };
 

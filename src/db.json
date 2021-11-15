@@ -71,6 +71,11 @@
       "dateOfBirth": "2021-11-18",
       "userName": "Nova korisnik",
       "id": 6
+    },
+    {
+      "dateOfBirth": "2021-07-08",
+      "userName": "Novi krisnik",
+      "id": 7
     }
   ],
   "borrowState": [
@@ -78,11 +83,6 @@
       "id": 14,
       "userId": 1,
       "bookId": 1
-    },
-    {
-      "id": 17,
-      "userId": 1,
-      "bookId": 4
     },
     {
       "id": 19,
@@ -93,6 +93,21 @@
       "id": 20,
       "userId": 3,
       "bookId": 2
+    },
+    {
+      "id": 21,
+      "userId": 1,
+      "bookId": 8
+    },
+    {
+      "id": 22,
+      "userId": 1,
+      "bookId": 7
+    },
+    {
+      "id": 23,
+      "userId": 3,
+      "bookId": 6
     }
   ]
 }

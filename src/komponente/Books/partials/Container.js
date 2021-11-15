@@ -13,7 +13,7 @@ export default function Container(props) {
                   <div className="book-info">
                     <p className="book-name">{bookName}</p>
                     <p className="book-author">{authorName}</p> 
-                    <Button className="button-custom" onClick = {()=> props.onClickSetSelected(book, props.numUser)}>{props.iconElement}</Button>
+                    <Button className="button-custom" onClick = {()=> props.onSelectedClick(book, props.numUserId)}>{props.iconElement}</Button>
                     </div>
                 </div>
             )
@@ -24,7 +24,7 @@ export default function Container(props) {
 
 Container.propTypes={
   books: PropTypes.array,
-  onClickSetSelected: PropTypes.func,
-  numUser: PropTypes.number,
+  onSelectedClick: PropTypes.func,
+  numUserId: PropTypes.number,
   iconElement: PropTypes.node
 };

@@ -260,37 +260,36 @@ button:focus {
   flex-wrap: wrap;
 }
 
-.jedan-div {
-       /* flex-basis: 95%; */
-    /* width: 95%; */
+.userinterface-div-content{
     flex-basis: 100%;
     padding: 10px 25px 0px 25px;
     margin: auto;
 }
 
-.jedan-div:nth-child(odd) {
-  background-color: #f6f6f6;
+.userinterface-div-content:nth-child(odd) {
+  background-color: #e8e6e6;
   box-shadow: 0px 0px 5px 0px #0000008c;
 }
 
-.jedan-div:nth-child(even) {
+.userinterface-div-content:nth-child(even) {
   background-color: white;
   box-shadow: 0px 0px 5px 0px #0000008c;
 }
 
-.drugi-div {
+.single-user-interface {
   display: flex;
   flex-basis: 100%;
   flex-wrap: nowrap;
 }
 
-.trevi-div {
+.single-book-borrow-state {
   flex-basis: 50%;
 }
 
-.drugi-div .trevi-div:nth-child(odd) {
+.single-user-interface .single-book-borrow-state:nth-child(odd) {
   border-right: 1.5px solid #00000061;
 }
+
 .userinterface-username, .userinterface-information {
   font-size: 22px;
   color: black;
@@ -304,8 +303,8 @@ button:focus {
 }
 
 .userinterface-div-content {
-  flex-basis: 50%;
-  width: 50%;
+  flex-basis: 100%;
+  width: 100%;
 }
 
 .userinterface-div-content .userinterface-message-p {
